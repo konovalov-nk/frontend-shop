@@ -100,10 +100,15 @@
         </fieldset>
 
         <div id="checkout">
-            <span id="total-amount">{{ totalAmount }}</span>
+            <span id="total-amount">{{ totalFormatted }}</span>
         </div>
 
-        <div id="paypal-button"></div>
+        <PayPal
+            :amount="totalAmount"
+            currency="USD"
+            :client="paypal.credentials"
+            env="sandbox">
+        </PayPal>
 
         <fieldset id="coupon-field">
             <input type="text" placeholder="ENTER COUPON CODE HERE" />
@@ -120,6 +125,8 @@
 </template>
 
 <script>
+import PayPal from 'vue-paypal-checkout';
+
 const BASE_MULTIPLIER = 1.0;
 const BASE_VALUE_PER_GAME = 10;
 const MULT_DUO_EXTRA = 0.4;
@@ -130,6 +137,9 @@ const BONUS_OLD_BOOSTER = 0;
 
 export default {
   name: 'OrderForm',
+  components: {
+    PayPal,
+  },
   data: () => ({
     compmode: 'solo',
     platform: 'pc',
@@ -140,6 +150,28 @@ export default {
     oldbooster: false,
     discount: 0,
     total: 0,
+    paypal: {
+      credentials: {
+        sandbox: 'AcxHfWkfclw4WMUj35YyOrXgjUAajk6qTuNa0QbV7AQIQc34mKwmbEQBpkaFerzHznezNLaH_THXsL1m',
+      },
+      items: [
+        {
+          name: 'hat',
+          description: 'Brown hat.',
+          quantity: '1',
+          price: '5',
+          currency: 'USD',
+        },
+        {
+          name: 'handbag',
+          description: 'Black handbag.',
+          quantity: '1',
+          price: '5',
+          currency: 'USD',
+        },
+      ],
+    },
+
   }),
   props: {},
   methods: {
@@ -178,10 +210,11 @@ export default {
     },
   },
   computed: {
-    totalAmount() {
-      // return `$ ${this.total.toFixed(2)}`;
-      // return `$ ${this.$store.state.cart.total.toFixed(2)}`;
+    totalFormatted() {
       return this.$store.getters.totalFormatted;
+    },
+    totalAmount() {
+      return this.$store.getters.total;
     },
   },
   mounted() {
