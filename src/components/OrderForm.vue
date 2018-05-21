@@ -120,68 +120,76 @@
 </template>
 
 <script>
-    const BASE_MULTIPLIER = 1.0;
-    const BASE_VALUE_PER_GAME = 10;
-    const MULT_DUO_EXTRA = 0.4;
-    const MULT_SQUAD_EXTRA = 0.;
-    const BONUS_9_KILLS = 5;
-    const BONUS_STREAM = 2;
-    const BONUS_OLD_BOOSTER = 0;
+const BASE_MULTIPLIER = 1.0;
+const BASE_VALUE_PER_GAME = 10;
+const MULT_DUO_EXTRA = 0.4;
+const MULT_SQUAD_EXTRA = 0.0;
+const BONUS_9_KILLS = 5;
+const BONUS_STREAM = 2;
+const BONUS_OLD_BOOSTER = 0;
 
-    export default {
-        name: 'OrderForm',
-        data: () => {
-            return {
-                compmode: 'solo',
-                platform: 'pc',
-                winmode: 'solo',
-                wins: 10,
-                end9: false,
-                stream: false,
-                oldbooster: false,
-                discount: 0,
-                total: 0,
-            }
-        },
-        props: {},
-        methods: {
-            updateTotal() {
-                let multiplier = BASE_MULTIPLIER;
-                multiplier += (this.compmode === 'solo'
-                    ? 0
-                    : (this.compmode === 'duo' ? MULT_DUO_EXTRA : MULT_SQUAD_EXTRA));
-                multiplier -= this.discount;
+export default {
+  name: 'OrderForm',
+  data: () => ({
+    compmode: 'solo',
+    platform: 'pc',
+    winmode: 'solo',
+    wins: 10,
+    end9: false,
+    stream: false,
+    oldbooster: false,
+    discount: 0,
+    total: 0,
+  }),
+  props: {},
+  methods: {
+    updateTotal() {
+      let multiplier = BASE_MULTIPLIER;
 
-                let valuePerGame = BASE_VALUE_PER_GAME;
-                valuePerGame += (this.end9 ? BONUS_9_KILLS : 0);
-                valuePerGame += (this.stream ? BONUS_STREAM : 0);
-                valuePerGame += (this.oldbooster ? BONUS_OLD_BOOSTER : 0);
+      switch (this.compmode) {
+        case 'solo':
+          break;
+        case 'duo':
+          multiplier += MULT_DUO_EXTRA;
+          break;
+        default:
+          multiplier += MULT_SQUAD_EXTRA;
+          break;
+      }
 
-                this.total = this.wins * valuePerGame;
-                if (this.wins >= 5) {
-                    if (this.wins < 10) {
-                        this.total -= 5;
-                    } else {
-                        this.total -= ((this.wins - (this.wins % 5)) / 5) * valuePerGame;
-                    }
-                }
+      multiplier -= this.discount;
 
-                this.total *= multiplier;
+      let valuePerGame = BASE_VALUE_PER_GAME;
+      valuePerGame += (this.end9 ? BONUS_9_KILLS : 0);
+      valuePerGame += (this.stream ? BONUS_STREAM : 0);
+      valuePerGame += (this.oldbooster ? BONUS_OLD_BOOSTER : 0);
 
-                // $("#total-amount").text('$' + this.total.toFixed(2));
-            }
-        },
-        computed: {
-            totalAmount () {
-                return `$ ${this.total.toFixed(2)}`
-            }
-        },
-        mounted() {
-            this.updateTotal()
-        },
+      this.total = this.wins * valuePerGame;
+      if (this.wins >= 5) {
+        if (this.wins < 10) {
+          this.total -= 5;
+        } else {
+          this.total -= ((this.wins - (this.wins % 5)) / 5) * valuePerGame;
+        }
+      }
+
+      this.total *= multiplier;
+      this.$store.commit('changeTotal', this.total);
+    },
+  },
+  computed: {
+    totalAmount() {
+      // return `$ ${this.total.toFixed(2)}`;
+      // return `$ ${this.$store.state.cart.total.toFixed(2)}`;
+      return this.$store.getters.totalFormatted;
+    },
+  },
+  mounted() {
+    this.updateTotal();
+  },
 
 
-    };
+};
 </script>
 
 <style scoped lang="less">

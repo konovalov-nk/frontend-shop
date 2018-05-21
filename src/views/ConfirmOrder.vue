@@ -6,10 +6,10 @@
 </template>
 
 <script>
-import Index from '/src/components/Index.vue';
+import Index from '@/components/Index.vue';
 
 export default {
-  name: 'home',
+  name: 'confirm_order',
   components: {
     Index,
   },

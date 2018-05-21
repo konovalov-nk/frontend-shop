@@ -13,15 +13,15 @@
 </template>
 
 <script>
-    import Faq from '@/components/Faq.vue';
-    import OrderForm from '@/components/OrderForm.vue';
+import Faq from '@/components/Faq.vue';
+import OrderForm from '@/components/OrderForm.vue';
 
-    export default {
-        name: 'ContentGrid',
-        components: {
-            Faq, OrderForm
-        }
-    };
+export default {
+  name: 'ContentGrid',
+  components: {
+    Faq, OrderForm,
+  },
+};
 </script>
 
 <style scoped lang="less">

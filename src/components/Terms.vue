@@ -75,19 +75,19 @@
 </template>
 
 <script>
-    export default {
-        name: 'Terms',
-        data() {
-            return {
-                modal_visible: false
-            }
-        },
-        methods: {
-            toggleModal () {
-                this.modal_visible = !this.modal_visible
-            }
-        }
+export default {
+  name: 'Terms',
+  data() {
+    return {
+      modal_visible: false,
     };
+  },
+  methods: {
+    toggleModal() {
+      this.modal_visible = !this.modal_visible;
+    },
+  },
+};
 </script>
 
 <style scoped lang="less">
