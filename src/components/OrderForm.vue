@@ -120,7 +120,8 @@
         </p>
 
         <a href="skype:elojobbing?chat">
-            <img src="https://secure.skypeassets.com/apollo/2.0.1735/images/components/contactme-button/chatbutton_32px.png"></a>
+            <img src="@/assets/chatbutton_32px.png">
+        </a>
     </div>
 </template>
 
