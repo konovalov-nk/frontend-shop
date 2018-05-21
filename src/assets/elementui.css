@@ -1,0 +1,29 @@
+.el-collapse-item {
+    padding-bottom: 8pt;
+}
+
+.el-collapse-item__wrap {
+}
+
+.el-collapse-item__header {
+    background-color: #e3e3e3;
+    font-weight: bold;
+    color: #7b7b7b;
+    padding: 0 6pt 0 6pt;
+    font-size: 12pt;
+    height: 30px;
+    line-height: 30px;
+}
+
+.el-collapse-item__content {
+    padding: 0 12pt 0 12pt;
+}
+
+.el-collapse-item__content {
+    font-family: Arial,Helvetica,sans-serif;
+    font-size: 11pt;
+}
+
+.el-collapse-item__arrow {
+    line-height: 30px;
+}

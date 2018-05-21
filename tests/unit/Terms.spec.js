@@ -1,11 +1,11 @@
 import { expect } from 'chai';
 import { shallow } from '@vue/test-utils';
-import HelloWorld from '@/components/HelloWorld.vue';
+import Terms from '@/components/Terms.vue';
 
-describe('HelloWorld.vue', () => {
+describe('Terms.vue', () => {
   it('renders props.msg when passed', () => {
     const msg = 'new message';
-    const wrapper = shallow(HelloWorld, {
+    const wrapper = shallow(Terms, {
       propsData: { msg },
     });
     expect(wrapper.text()).to.include(msg);

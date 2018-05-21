@@ -1,0 +1,309 @@
+html {
+
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Montserrat', Helvetica, sans-serif;
+    font-size: 11pt;
+    color: #7b7b7b;
+}
+
+header {
+    height: 18em;
+    background: url('banner1.png') no-repeat top;
+    background-size: cover;
+    padding-top: 1px;
+}
+
+header h1 {
+    text-transform: uppercase;
+    font-weight: 700;
+    font-style: italic;
+    letter-spacing: 1pt;
+    color: white;
+    filter: drop-shadow(2pt 3pt 0 orange) drop-shadow(2pt 3pt 0 black);
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+    text-align: center;
+}
+
+h1 {
+    font-size: 3.4em;
+}
+
+h2 {
+    font-size: 1.4em;
+}
+
+h3 {
+    font-size: 1.1em;
+}
+
+#order-form label {
+    height: 18pt;
+    font-weight: 600;
+}
+
+#order-form .extra {
+    font-size: 0.7em;
+    text-transform: none;
+    /*    text-align: center;*/
+    font-weight: 600;
+}
+
+.order-choice {
+    display: inline-block;
+    height: 2pt;
+}
+
+#wins-slider {
+    cursor: pointer;
+    border-radius: 16px;
+    border: none;
+    width: 220pt;
+    height: 5pt;
+    margin: 10px 0;
+    box-shadow: 0 0 5px lightgray;
+}
+
+#wins-slider-handle {
+    cursor: pointer;
+    border-radius: 100%;
+    position: relative;
+    top: -6pt;
+    background-color: #ababab;
+}
+
+#faq, #order-form {
+    background-color: #f6f6f6;
+    box-shadow: 0 0 10pt lightgray;
+    padding: 20px 40px;
+}
+
+#faq {
+    grid-area: faq;
+}
+
+#order-form {
+    grid-area: order-form;
+}
+
+#order-form fieldset {
+    border: none;
+    margin: 5pt 0;
+}
+
+#order-form fieldset legend {
+    font-size: 1.2em;
+    font-weight: 700;
+    padding: 0;
+}
+
+main {
+    max-width: 1280px;
+    margin: 24pt auto;
+}
+
+#content-grid {
+    width: 80%;
+    min-width: 380px;
+    max-width: 580px;
+    margin: 0 auto;
+
+    display: grid;
+    grid-gap: 24pt;
+    grid-template-areas: "order-form" "faq" "reviews";
+}
+
+@media only screen and (min-width: 1000px) {
+    #content-grid {
+        max-width: none;
+        grid-template-columns: auto 380px;
+        grid-template-areas: "faq order-form" "reviews reviews";
+    }
+}
+
+#reviews {
+    grid-area: reviews;
+}
+
+.form-radio {
+    display: inline-block;
+    text-transform: uppercase;
+    width: 65pt;
+}
+
+.form-radio input {
+    display: none;
+}
+
+.form-radio label {
+    cursor: pointer;
+}
+
+.form-radio input + .custom-checkbox {
+    height: 1em;
+    width: 1em;
+    position: relative;
+    top: 4pt;
+    right: 2pt;
+    display: inline-block;
+    padding: 0;
+    background: url('unchecked.png') no-repeat center;
+    background-size: contain;
+}
+
+.form-radio input:checked + .custom-checkbox {
+    height: 1em;
+    width: 1em;
+    position: relative;
+    top: 4pt;
+    right: 2pt;
+    display: inline-block;
+    padding: 0;
+    background: url('checked.png') no-repeat center;
+    background-size: contain;
+}
+
+.ui-accordion-header { /* Bad practise, I know, but oh well */
+    background-color: #e3e3e3 !important;
+    border-radius: 0 !important;
+    border: none !important;
+    color: #7b7b7b !important;
+    font-size: 1.1em !important;
+    font-weight: 600 !important;
+    margin-top: 10px !important;
+}
+
+.ui-accordion-header-icon {
+    float: right;
+    top: 5px;
+}
+
+.ui-accordion-header-active .ui-accordion-header-icon {
+    background-image: url(https://code.jquery.com/ui/1.12.1/themes/base/images/ui-icons_444444_256x240.png) !important;
+}
+
+.ui-accordion-header-collapsed .ui-accordion-header-icon {
+
+}
+
+#coupon-field {
+    width: 220pt;
+}
+
+#coupon-field input {
+    /*height: ;*/
+    width: 100%;
+    padding: 0.4em;
+    text-align: center;
+    font-weight: 600;
+    border: 1px solid #d7d7d7;
+    border-radius: 10px;
+    box-shadow: 0 0 5px lightgray;
+    text-transform: uppercase;
+}
+
+#coupon-field input::placeholder {
+    opacity: 0.6;
+    font-size: 0.8em;
+}
+
+#coupon-field p {
+    text-transform: uppercase;
+    text-align: center;
+    font-size: 0.8em;
+    font-weight: 600;
+    color: darkorange;
+}
+
+#specials-field label {
+    display: block;
+    font-size: 0.9em;
+
+}
+
+#specials-field input {
+    display: none;
+}
+
+#specials-field label {
+    cursor: pointer;
+}
+
+#specials-field input + .custom-checkbox {
+    height: 1em;
+    width: 1em;
+    position: relative;
+    right: 2pt;
+    display: inline-block;
+    padding: 0;
+    background: url('unchecked.png') no-repeat center;
+    background-size: contain;
+}
+
+#specials-field input:checked + .custom-checkbox {
+    height: 1em;
+    width: 1em;
+    position: relative;
+    right: 2pt;
+    display: inline-block;
+    padding: 0;
+    background: url('checked.png') no-repeat center;
+    background-size: contain;
+}
+
+#checkout {
+
+}
+
+#total-amount {
+    font-size: 2.5em;
+    font-weight: 500;
+    color: #f26722;
+    margin: 6pt
+}
+
+#wins-value {
+    width: 80pt;
+    padding: 0.6em;
+    margin: 10pt 0;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 0 5px lightgray;
+    text-align: center;
+    font-size: 1.2em;
+    font-weight: 700;
+}
+
+#paypal-button {
+    display: inline-block;
+    margin-left: 20px;
+}
+
+/* The Modal (background) */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 3; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0, 0, 0); /* Fallback color */
+    background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+}
+
+/* Modal Content/Box */
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto; /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; /* Could be more or less, depending on screen size */
+    border-radius: 15px;
+}
