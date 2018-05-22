@@ -1,25 +1,25 @@
 <template>
     <div id="order-form">
-        <fieldset id="compmode-field">
+        <fieldset id="mode-field">
             <legend>Competitive Mode</legend>
             <div class="form-radio">
-                <label for="compmode-solo">
-                    <input type="radio" @change="updateTotal" v-model="compmode" value="solo" id="compmode-solo" checked>
-                    <label for="compmode-solo" class="custom-checkbox"></label>Solo
+                <label for="mode-solo">
+                    <input type="radio" @change="updateTotal" v-model="mode" value="solo" id="mode-solo" checked>
+                    <label for="mode-solo" class="custom-checkbox"></label>Solo
                 </label>
             </div>
 
             <div class="form-radio">
-                <label for="compmode-duo">
-                    <input type="radio" @change="updateTotal" v-model="compmode" value="duo" id="compmode-duo">
-                    <label for="compmode-duo" class="custom-checkbox"></label>Duo
+                <label for="mode-duo">
+                    <input type="radio" @change="updateTotal" v-model="mode" value="duo" id="mode-duo">
+                    <label for="mode-duo" class="custom-checkbox"></label>Duo
                 </label>
             </div>
 
             <div class="form-radio">
-                <label for="compmode-squad">
-                    <input type="radio" @change="updateTotal" v-model="compmode" value="squad" id="compmode-squad">
-                    <label for="compmode-squad" class="custom-checkbox"></label>Squad
+                <label for="mode-squad">
+                    <input type="radio" @change="updateTotal" v-model="mode" value="squad" id="mode-squad">
+                    <label for="mode-squad" class="custom-checkbox"></label>Squad
                 </label>
             </div>
         </fieldset>
@@ -48,36 +48,10 @@
             </div>
         </fieldset>
 
-        <fieldset id="wins-field">
+        <fieldset id="amount-field">
             <legend>Wins</legend>
-
-            <div class="form-radio">
-                <label for="wins-solo">
-                    <input type="radio" @change="updateTotal" v-model="winmode" value="solo" id="wins-solo" checked>
-                    <label for="wins-solo" class="custom-checkbox"></label>Solo
-                </label>
-            </div>
-
-            <div class="form-radio">
-                <label for="wins-duo">
-                    <input type="radio" @change="updateTotal" v-model="winmode" value="duo" id="wins-duo">
-                    <label for="wins-duo" class="custom-checkbox"></label>Duo
-                </label>
-            </div>
-
-            <div class="form-radio">
-                <label for="wins-squad">
-                    <input type="radio" @change="updateTotal" v-model="winmode" value="squad" id="wins-squad">
-                    <label for="wins-squad" class="custom-checkbox"></label>Squad
-                </label>
-            </div>
-
-            <br>
-            <div class="form-radio"></div>
-            <div class="form-radio extra">40% extra</div>
-            <div class="form-radio extra">80% extra</div>
-            <el-slider @change="updateTotal" :min="1" v-model="wins"/>
-            <div id="wins-value">{{ wins }} wins</div>
+            <el-slider @change="updateTotal" :min="1" v-model="amount"/>
+            <div id="amount-value">{{ amount }} wins</div>
         </fieldset>
 
         <fieldset id="specials-field">
@@ -100,20 +74,23 @@
         </fieldset>
 
         <div id="checkout">
-            <span id="total-amount">{{ totalFormatted }}</span>
+            <span id="total-amount">{{ currentTotal }}</span>
         </div>
 
-        <PayPal
-            :amount="totalAmount"
-            currency="USD"
-            :client="paypal.credentials"
-            env="sandbox">
-        </PayPal>
+        <Button style="float: right" @click="addToCart" type="primary">Add to Cart</Button>
 
         <fieldset id="coupon-field">
             <input type="text" placeholder="ENTER COUPON CODE HERE" />
             <p>Use "FORTNITE1" for 10% discount</p>
         </fieldset>
+
+        <PayPal
+                :amount="totalAmount"
+                currency="USD"
+                :client="paypal.credentials"
+                :items="paypal_items"
+                env="sandbox">
+        </PayPal>
 
         <p id="get-started">
             Contact us on Skype using the button below.
@@ -127,95 +104,67 @@
 
 <script>
 import PayPal from 'vue-paypal-checkout';
-
-const BASE_MULTIPLIER = 1.0;
-const BASE_VALUE_PER_GAME = 10;
-const MULT_DUO_EXTRA = 0.4;
-const MULT_SQUAD_EXTRA = 0.0;
-const BONUS_9_KILLS = 5;
-const BONUS_STREAM = 2;
-const BONUS_OLD_BOOSTER = 0;
+import { Button, Notification } from 'element-ui';
+import { getPrice } from '@/store/cart';
 
 export default {
   name: 'OrderForm',
   components: {
-    PayPal,
+    Button, PayPal,
   },
   data: () => ({
-    compmode: 'solo',
+    mode: 'solo',
     platform: 'pc',
-    winmode: 'solo',
-    wins: 10,
+    amount: 10,
     end9: false,
     stream: false,
     oldbooster: false,
+    specials: [],
     discount: 0,
     total: 0,
     paypal: {
       credentials: {
         sandbox: 'AcxHfWkfclw4WMUj35YyOrXgjUAajk6qTuNa0QbV7AQIQc34mKwmbEQBpkaFerzHznezNLaH_THXsL1m',
       },
-      items: [
-        {
-          name: 'hat',
-          description: 'Brown hat.',
-          quantity: '1',
-          price: '5',
-          currency: 'USD',
-        },
-        {
-          name: 'handbag',
-          description: 'Black handbag.',
-          quantity: '1',
-          price: '5',
-          currency: 'USD',
-        },
-      ],
     },
 
   }),
   props: {},
   methods: {
+    getItem() {
+      const specials = ['end9', 'stream', 'oldbooster'].map(s => (this[s] ? s : null)).filter(n => n);
+
+      return {
+        game: 'fortnite',
+        mode: this.mode,
+        platform: this.platform,
+        amount: this.amount,
+        specials,
+      };
+    },
+
     updateTotal() {
-      let multiplier = BASE_MULTIPLIER;
+      this.total = getPrice(this.getItem(), this.discount);
+    },
 
-      switch (this.compmode) {
-        case 'solo':
-          break;
-        case 'duo':
-          multiplier += MULT_DUO_EXTRA;
-          break;
-        default:
-          multiplier += MULT_SQUAD_EXTRA;
-          break;
-      }
+    addToCart() {
+      this.$store.dispatch('cart/add', this.getItem());
 
-      multiplier -= this.discount;
-
-      let valuePerGame = BASE_VALUE_PER_GAME;
-      valuePerGame += (this.end9 ? BONUS_9_KILLS : 0);
-      valuePerGame += (this.stream ? BONUS_STREAM : 0);
-      valuePerGame += (this.oldbooster ? BONUS_OLD_BOOSTER : 0);
-
-      this.total = this.wins * valuePerGame;
-      if (this.wins >= 5) {
-        if (this.wins < 10) {
-          this.total -= 5;
-        } else {
-          this.total -= ((this.wins - (this.wins % 5)) / 5) * valuePerGame;
-        }
-      }
-
-      this.total *= multiplier;
-      this.$store.commit('changeTotal', this.total);
+      Notification.info({
+        title: 'Info',
+        message: 'You have added an item to the cart',
+      });
     },
   },
   computed: {
-    totalFormatted() {
-      return this.$store.getters.totalFormatted;
+    currentTotal() {
+      return `$${this.total.toFixed(2)}`;
     },
     totalAmount() {
-      return this.$store.getters.total;
+      return this.$store.getters['cart/total'];
+    },
+    paypal_items() {
+      return this.$store.getters['cart/itemsFormattedPayPal'];
     },
   },
   mounted() {

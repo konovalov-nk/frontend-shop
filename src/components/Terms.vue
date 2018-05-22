@@ -93,6 +93,7 @@ export default {
 <style scoped lang="less">
     #modal-link {
         color: #f26722;
+        cursor: pointer;
     }
     .modal.visible {
         display: block;

@@ -7,6 +7,7 @@
             <div id="content-grid">
                 <Faq/>
                 <OrderForm/>
+                <Cart />
             </div>
         </main>
     </div>
@@ -15,11 +16,12 @@
 <script>
 import Faq from '@/components/Faq.vue';
 import OrderForm from '@/components/OrderForm.vue';
+import Cart from '@/components/Cart.vue';
 
 export default {
   name: 'ContentGrid',
   components: {
-    Faq, OrderForm,
+    Cart, Faq, OrderForm,
   },
 };
 </script>

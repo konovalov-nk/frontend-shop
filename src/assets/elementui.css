@@ -27,3 +27,15 @@
 .el-collapse-item__arrow {
     line-height: 30px;
 }
+
+.el-table .el-table__header-wrapper thead tr th {
+    background-color: #f6f6f6;
+}
+
+.el-table tbody tr td {
+    background-color: #f6f6f6;
+}
+
+.el-table .el-table__empty-block {
+    background-color: #f6f6f6;
+}

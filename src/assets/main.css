@@ -77,7 +77,7 @@ h3 {
     background-color: #ababab;
 }
 
-#faq, #order-form {
+#faq, #order-form, #cart {
     background-color: #f6f6f6;
     box-shadow: 0 0 10pt lightgray;
     padding: 20px 40px;
