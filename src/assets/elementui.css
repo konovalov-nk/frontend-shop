@@ -39,3 +39,7 @@
 .el-table .el-table__empty-block {
     background-color: #f6f6f6;
 }
+
+label.el-radio.is-disabled.is-bordered {
+    border-color: #cbccce;
+}

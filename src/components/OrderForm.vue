@@ -77,40 +77,34 @@
             <span id="total-amount">{{ currentTotal }}</span>
         </div>
 
-        <Button style="float: right" @click="addToCart" type="primary">Add to Cart</Button>
-
-        <fieldset id="coupon-field">
-            <input type="text" placeholder="ENTER COUPON CODE HERE" />
-            <p>Use "FORTNITE1" for 10% discount</p>
-        </fieldset>
-
-        <PayPal
-                :amount="totalAmount"
-                currency="USD"
-                :client="paypal.credentials"
-                :items="paypal_items"
-                env="sandbox">
-        </PayPal>
+        <div id="buttons-bar">
+            <Button @click="addToCart" type="primary">Add to Cart</Button>
+            <Button @click="checkout" :disabled="checkoutDisabled" type="primary">
+                <i class="el-icon-goods"></i>
+                Checkout
+            </Button>
+        </div>
 
         <p id="get-started">
             Contact us on Skype using the button below.
         </p>
 
-        <a href="skype:elojobbing?chat">
-            <img src="@/assets/chatbutton_32px.png">
-        </a>
+        <div id="skype-bar">
+            <a id="skype-button" href="skype:elojobbing?chat">
+                <img src="@/assets/chatbutton_32px.png">
+            </a>
+        </div>
     </div>
 </template>
 
 <script>
-import PayPal from 'vue-paypal-checkout';
-import { Button, Notification } from 'element-ui';
+import { Button, Notification, Row } from 'element-ui';
 import { getPrice } from '@/store/cart';
 
 export default {
   name: 'OrderForm',
   components: {
-    Button, PayPal,
+    Button, Row,
   },
   data: () => ({
     mode: 'solo',
@@ -122,12 +116,6 @@ export default {
     specials: [],
     discount: 0,
     total: 0,
-    paypal: {
-      credentials: {
-        sandbox: 'AcxHfWkfclw4WMUj35YyOrXgjUAajk6qTuNa0QbV7AQIQc34mKwmbEQBpkaFerzHznezNLaH_THXsL1m',
-      },
-    },
-
   }),
   props: {},
   methods: {
@@ -155,16 +143,17 @@ export default {
         message: 'You have added an item to the cart',
       });
     },
+
+    checkout() {
+      this.$router.push('checkout');
+    },
   },
   computed: {
     currentTotal() {
       return `$${this.total.toFixed(2)}`;
     },
-    totalAmount() {
-      return this.$store.getters['cart/total'];
-    },
-    paypal_items() {
-      return this.$store.getters['cart/itemsFormattedPayPal'];
+    checkoutDisabled() {
+      return this.$store.getters['cart/items'].length === 0;
     },
   },
   mounted() {
@@ -180,5 +169,9 @@ export default {
         font-size: 1em;
         font-weight: 500;
         margin-top: 2em;
+    }
+
+    #buttons-bar, #skype-bar {
+        text-align: center;
     }
 </style>

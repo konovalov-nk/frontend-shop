@@ -1,17 +1,14 @@
 <template>
-  <div class="home">
-    <img src="../assets/logo.png">
-    <Index msg="Welcome to Your Vue.js App"/>
-  </div>
+  <CheckoutPage />
 </template>
 
 <script>
-import Index from '@/components/Index.vue';
+import CheckoutPage from '@/components/pages/CheckoutPage.vue';
 
 export default {
   name: 'checkout',
   components: {
-    Index,
+    CheckoutPage,
   },
 };
 </script>

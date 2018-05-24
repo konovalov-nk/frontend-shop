@@ -1,17 +1,14 @@
 <template>
-  <div class="home">
-    <img src="../assets/logo.png">
-    <Index msg="Welcome to Your Vue.js App"/>
-  </div>
+  <ConfirmOrderPage />
 </template>
 
 <script>
-import Index from '@/components/Index.vue';
+import ConfirmOrderPage from '@/components/pages/ConfirmOrderPage.vue';
 
 export default {
   name: 'confirm_order',
   components: {
-    Index,
+    ConfirmOrderPage,
   },
 };
 </script>

@@ -77,7 +77,7 @@ h3 {
     background-color: #ababab;
 }
 
-#faq, #order-form, #cart {
+#faq, #order-form, #cart, #content-grid-simple {
     background-color: #f6f6f6;
     box-shadow: 0 0 10pt lightgray;
     padding: 20px 40px;
@@ -118,11 +118,26 @@ main {
     grid-template-areas: "order-form" "faq" "reviews";
 }
 
+#content-grid-simple, #steps-bar {
+    width: 80%;
+    min-width: 380px;
+    max-width: 580px;
+    margin: 0 auto;
+
+    display: grid;
+    grid-gap: 24pt;
+    grid-template-areas: "steps" "buttons";
+}
+
 @media only screen and (min-width: 1000px) {
     #content-grid {
         max-width: none;
         grid-template-columns: auto 380px;
         grid-template-areas: "faq order-form" "reviews reviews";
+    }
+    #content-grid-simple, #steps-bar {
+        max-width: none;
+        grid-template-columns: auto;
     }
 }
 
@@ -306,4 +321,10 @@ main {
     border: 1px solid #888;
     width: 80%; /* Could be more or less, depending on screen size */
     border-radius: 15px;
+}
+
+#buttons-bar {
+    border-top: 1px solid #d8dbe2;
+    padding-top: 10pt;
+    text-align: right;
 }

@@ -1,14 +1,14 @@
 <template>
-  <ContentGrid />
+  <IndexPage />
 </template>
 
 <script>
-import ContentGrid from '@/components/ContentGrid.vue';
+import IndexPage from '@/components/pages/IndexPage.vue';
 
 export default {
   name: 'index',
   components: {
-    ContentGrid,
+    IndexPage,
   },
 };
 </script>

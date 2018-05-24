@@ -1,16 +1,15 @@
 <template>
-    <div id="cart">
-        <b>Cart</b>
+    <div :id="cart_type">
+        <h4>Cart</h4>
         <Table
                 :data="table_data"
-                size="mini"
+                size="medium"
                 show-summary
                 :summary-method="getSummaries"
                 style="width: 100%">
             <TableColumn
                     prop="product_name"
-                    label="Product Name"
-                    width="375">
+                    label="Product Name">
                 <template slot-scope="scope">
                     <b class="product-name">
                         {{ scope.row.product_name }}
@@ -21,53 +20,80 @@
                     </small>
                 </template>
             </TableColumn>
+
             <TableColumn
                     prop="quantity"
                     label="Quantity"
-                    width="90">
+                    width="100">
                 <template slot-scope="scope">
                     x{{ scope.row.quantity }}
                 </template>
             </TableColumn>
+
             <TableColumn
+                    width="140"
                     prop="total"
                     label="Total">
             </TableColumn>
-            <TableColumn
-                    width="130"
-                    label="Operations">
-                <template slot-scope="scope">
-                    <Row>
-                        <Button
-                            size="mini"
-                            class="micro"
-                            type="warning" plain icon="el-icon-remove-outline"
-                            @click="handleRemove(scope.$index, scope.row)">
-                        </Button>
-                        <Button
-                            size="mini"
-                            class="micro"
-                            type="success" plain icon="el-icon-circle-plus-outline"
-                            @click="handleAdd(scope.$index, scope.row)">
-                        </Button>
-                        <Button
-                            size="mini"
-                            class="micro"
-                            type="danger" plain icon="el-icon-remove"
-                            @click="handleDelete(scope.$index, scope.row)">
-                        </Button>
-                    </Row>
-                </template>
-            </TableColumn>
+
+            <template v-if="!locked">
+                <TableColumn
+                        width="130"
+                        label="Operations">
+                    <template slot-scope="scope">
+                        <Row>
+                            <Button
+                                size="mini"
+                                class="micro"
+                                type="warning" plain icon="el-icon-remove-outline"
+                                @click="handleRemove(scope.$index, scope.row)">
+                            </Button>
+                            <Button
+                                size="mini"
+                                class="micro"
+                                type="success" plain icon="el-icon-circle-plus-outline"
+                                @click="handleAdd(scope.$index, scope.row)">
+                            </Button>
+                            <Button
+                                size="mini"
+                                class="micro"
+                                type="danger" plain icon="el-icon-remove"
+                                @click="handleDelete(scope.$index, scope.row)">
+                            </Button>
+                        </Row>
+                    </template>
+                </TableColumn>
+            </template>
+
             <template slot="empty">
                 Your cart is empty
             </template>
         </Table>
+
+        <template v-if="!locked">
+            <el-row :gutter="20">
+                <el-col :span="13">
+                    &nbsp;
+                </el-col>
+                <el-col :span="11">
+                    <el-input
+                            placeholder="Enter coupon code here"
+                            size="medium"
+                            v-model="coupon"
+                            clearable>
+                        <Button @click="applyCoupon" slot="append" type="warning" plain>
+                            Apply
+                        </Button>
+                    </el-input>
+                </el-col>
+            </el-row>
+        </template>
+
     </div>
 </template>
 
 <script>
-import { Button, Table, TableColumn, Row } from 'element-ui';
+import { Button, Col, Input, Table, TableColumn, Row } from 'element-ui';
 import lang from 'element-ui/lib/locale/lang/en';
 import locale from 'element-ui/lib/locale';
 
@@ -75,11 +101,22 @@ locale.use(lang);
 
 export default {
   name: 'Cart',
+  props: {
+    cartType: '',
+    locked: false,
+  },
   components: {
-    Button, Table, TableColumn, Row
+    'el-col': Col,
+    'el-input': Input,
+    'el-row': Row,
+    Button,
+    Table,
+    TableColumn,
+    Row,
   },
   data() {
     return {
+      coupon: '',
       example_data: [{
         id: 1,
         product_name: 'LoL ELO Boost',
@@ -106,13 +143,16 @@ export default {
     table_data() {
       return this.$store.getters['cart/itemsFormatted'];
     },
+    cart_type() {
+      return this.cartType === '' ? 'cart' : 'cart-simple';
+    },
   },
   methods: {
     getSummaries() {
       return [
-        'Total Cost',
-        '',
-        this.$store.getters['cart/totalFormatted']
+        this.$store.getters['cart/currentCoupon'],
+        'Total Cost:',
+        this.$store.getters['cart/totalFormatted'],
       ];
     },
     formatDescription(description) {
@@ -127,12 +167,15 @@ export default {
     handleDelete(index, row) {
       this.$store.dispatch('cart/remove', row.id);
     },
+    applyCoupon() {
+      this.$store.dispatch('cart/applyCoupon', this.coupon);
+    },
   },
 };
 </script>
 
 <style lang="less">
-    #cart {
+    #cart, #cart-simple {
         .cell {
             line-height: 12pt;
         }
@@ -146,6 +189,9 @@ export default {
         button.el-button.micro {
             padding: 3px;
             font-size: 19px;
+        }
+        td.is-leaf {
+            font-weight: bold;
         }
     }
 </style>

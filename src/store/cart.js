@@ -75,13 +75,11 @@ const storeCart = {
   state: {
     items: [],
     discount: 0,
+    coupon: '',
     total: 0,
     counter: 1,
   },
   mutations: {
-    changeTotal(state, n) {
-      state.total = n;
-    },
     addItem(state, item) {
       item.id = state.counter;
       state.items.push(item);
@@ -96,6 +94,8 @@ const storeCart = {
           i.amount += 1;
         }
 
+        i.amount = i.amount > 100 ? 100 : i.amount;
+
         return i;
       });
     },
@@ -105,11 +105,19 @@ const storeCart = {
           i.amount -= 1;
         }
 
+        i.amount = i.amount < 1 ? 1 : i.amount;
+
         return i;
       });
     },
     calculateTotal(state) {
       state.total = state.items.map(i => getPrice(i, state.discount)).reduce((r, i) => r + i);
+    },
+    changeDiscount(state, discount) {
+      state.discount = discount;
+    },
+    changeCoupon(state, coupon) {
+      state.coupon = coupon;
     },
   },
   actions: {
@@ -129,9 +137,25 @@ const storeCart = {
       commit('decreaseItem', id);
       commit('calculateTotal');
     },
+    applyCoupon({ commit }, coupon) {
+      let discount = 0;
+      if (coupon === 'FORTNITE1') discount = 0.1;
+
+      if (discount === 0) {
+        coupon = '';
+      }
+      commit('changeCoupon', coupon);
+      commit('changeDiscount', discount);
+      commit('calculateTotal');
+    },
   },
   getters: {
-    totalFormatted: state => `$${state.total.toFixed(2)}`,
+    totalFormatted(state) {
+      const discountString = state.discount > 0 ? ` (-${state.discount * 100}%)` : '';
+
+      return `$${state.total.toFixed(2)}${discountString}`;
+    },
+    currentCoupon: state => (state.coupon ? `Coupon applied: ${state.coupon}` : ''),
     total: state => state.total.toFixed(2),
     items: state => state.items,
     itemsFormatted(state) {
