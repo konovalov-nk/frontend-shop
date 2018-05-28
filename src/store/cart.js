@@ -111,7 +111,7 @@ const storeCart = {
       });
     },
     calculateTotal(state) {
-      state.total = state.items.map(i => getPrice(i, state.discount)).reduce((r, i) => r + i);
+      state.total = state.items.map(i => getPrice(i, state.discount)).reduce((r, i) => r + i, 0.0);
     },
     changeDiscount(state, discount) {
       state.discount = discount;

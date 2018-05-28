@@ -255,7 +255,14 @@ export default {
     },
     login() {
       this.showLoading('formLogin');
-      this.$store.dispatch('user/fetchJWT', this.formLogin.email, this.formLogin.password).then(() => {
+      const user = {
+        email: this.formLogin.email,
+        password: this.formLogin.password,
+        password_confirmation: this.formLogin.password,
+      };
+
+      this.$store.dispatch('user/fetchJWT', user).then((v) => {
+        console.log(v);
         this.closeLoading('formLogin');
       }).catch((e) => {
         console.log('error');
