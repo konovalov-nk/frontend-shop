@@ -82,7 +82,9 @@ const storeUser = {
             Accept: 'application/json',
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ email, password, password_confirmation: password }),
+          body: JSON.stringify({
+            user: email, password, password_confirmation: password,
+          }),
         });
         let jwt = '';
         rawResponse.headers.forEach((v, k) => {
