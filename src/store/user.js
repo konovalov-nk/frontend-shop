@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 
 const hostname = process.env.VUE_APP_API_HOSTNAME;
-const protocol = process.env.VUE_APP_API_SSL === true ? 'https' : 'http';
+const protocol = process.env.VUE_APP_API_SSL === 'true' ? 'https' : 'http';
 
 // const fetchResponse = (async (callback, data, jwt) => {
 //   const rawResponse = await fetch(`${protocol}://${hostname}/users/sign_in`, {
