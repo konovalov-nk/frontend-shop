@@ -164,36 +164,50 @@ export default {
       },
       rules: {
         first_name: [
-          {type: 'string', whitespace: true, required: true, message: 'First Name is required', trigger: 'blur'}
+          {
+            type: 'string', whitespace: true, required: true, message: 'First Name is required', trigger: 'blur',
+          },
         ],
         last_name: [
-          {type: 'string', whitespace: true, required: true, message: 'Last Name is required', trigger: 'blur'}
+          {
+            type: 'string', whitespace: true, required: true, message: 'Last Name is required', trigger: 'blur',
+          },
         ],
         email: [
-          {type: 'email', required: true, message: 'E-Mail is required', trigger: 'blur'}
+          {
+            type: 'email', required: true, message: 'E-Mail is required', trigger: 'blur',
+          },
         ],
         city: [
-          {type: 'string', whitespace: true, required: true, message: 'City is required', trigger: 'blur'}
+          {
+            type: 'string', whitespace: true, required: true, message: 'City is required', trigger: 'blur',
+          },
         ],
         post_code: [
-          {type: 'string', whitespace: true, required: true, message: 'Post Code is required', trigger: 'blur'}
+          {
+            type: 'string', whitespace: true, required: true, message: 'Post Code is required', trigger: 'blur',
+          },
         ],
         country: [
-          {type: 'string', whitespace: true, required: true, message: 'Country is required', trigger: 'blur'}
+          {
+            type: 'string', whitespace: true, required: true, message: 'Country is required', trigger: 'blur',
+          },
         ],
         password: [
-          {validator: validatePassword, trigger: 'blur'}
+          { validator: validatePassword, trigger: 'blur' },
         ],
         password_confirm: [
-          {validator: validatePasswordConfirm, trigger: 'blur'}
+          { validator: validatePasswordConfirm, trigger: 'blur' },
         ],
       },
       rulesLogin: {
         email: [
-          {type: 'email', required: true, message: 'E-Mail is required', trigger: 'blur'}
+          {
+            type: 'email', required: true, message: 'E-Mail is required', trigger: 'blur',
+          },
         ],
         password: [
-          {validator: validatePassword, trigger: 'blur'}
+          { validator: validatePassword, trigger: 'blur' },
         ],
       },
       countries: [],
@@ -203,10 +217,10 @@ export default {
   },
   methods: {
     pageType(type) {
-      return this.page_type === type
+      return this.page_type === type;
     },
     toggleDetails() {
-      this.page_type = this.page_type === 'register' ? 'login' : 'register'
+      this.page_type = this.page_type === 'register' ? 'login' : 'register';
     },
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
@@ -224,14 +238,14 @@ export default {
       this.showLoading('form');
       setTimeout(() => {
         this.closeLoading('form');
-      }, 2000)
+      }, 2000);
     },
     login() {
       // this.formLogin
       this.showLoading('formLogin');
       setTimeout(() => {
         this.closeLoading('formLogin');
-      }, 2000)
+      }, 2000);
     },
     resetForm(formName) {
       this.$refs[formName].resetFields();
@@ -247,17 +261,17 @@ export default {
         target: this.$refs[formName].$el,
         text: `Trying to sign-${sign_type}...`,
         spinner: 'el-icon-loading',
-        background: 'rgba(0, 0, 0, 0.6)'
+        background: 'rgba(0, 0, 0, 0.6)',
       });
     },
     closeLoading(formName) {
-      let loading = formName === 'form' ? 'loading' : 'loadingLogin';
+      const loading = formName === 'form' ? 'loading' : 'loadingLogin';
       this[loading].close();
     },
 
   },
   mounted() {
-    let countries_unique = Object.values(countryData.countries.all.reduce((acc, cur) => Object.assign(acc, {[cur.ioc]: cur}), {}))
+    const countries_unique = Object.values(countryData.countries.all.reduce((acc, cur) => Object.assign(acc, { [cur.ioc]: cur }), {}));
     this.countries = countries_unique
       .map((c, i) => ({
         id: i,
@@ -265,7 +279,7 @@ export default {
         ioc: c.ioc,
       }))
       .sort((a, b) => a.name.localeCompare(b.name));
-  }
+  },
 };
 </script>
 
