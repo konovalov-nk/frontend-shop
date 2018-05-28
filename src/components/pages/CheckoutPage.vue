@@ -3,6 +3,7 @@
         <template slot="content">
             <el-row :gutter="20">
                 <el-col :span="16">
+                    <AccountDetails />
                     <Cart cartType="simple"/>
                 </el-col>
                 <el-col :span="8">
@@ -23,6 +24,7 @@
 
 <script>
 import ContentGridSimple from '@/components/layouts/ContentGridSimple.vue';
+import AccountDetails from '@/components/AccountDetails.vue';
 import Cart from '@/components/Cart.vue';
 import Payment from '@/components/Payment.vue';
 import { Button, Col, Row } from 'element-ui';
@@ -32,6 +34,7 @@ export default {
   components: {
     'el-row': Row,
     'el-col': Col,
+    AccountDetails,
     Button,
     Cart,
     ContentGridSimple,
