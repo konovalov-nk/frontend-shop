@@ -218,6 +218,9 @@ export default {
     };
   },
   computed: {
+    userData() {
+      return this.$store.getters['user/userData'];
+    },
     loggedIn() {
       return this.$store.getters['user/loggedIn'];
     },
@@ -288,6 +291,10 @@ export default {
         ioc: c.ioc,
       }))
       .sort((a, b) => a.name.localeCompare(b.name));
+
+    if (this.userData) {
+      this.form = this.userData;
+    }
   },
 };
 </script>
