@@ -76,15 +76,17 @@
                     &nbsp;
                 </el-col>
                 <el-col :span="11">
-                    <el-input
-                            placeholder="Enter coupon code here"
-                            size="medium"
-                            v-model="coupon"
-                            clearable>
-                        <Button @click="applyCoupon" slot="append" type="warning" plain>
-                            Apply
-                        </Button>
-                    </el-input>
+                    <Tooltip content='Use "FORTNITE1" for 10% discount!'>
+                        <el-input
+                                placeholder="Enter coupon code here"
+                                size="medium"
+                                v-model="coupon"
+                                clearable>
+                            <Button @click="applyCoupon" slot="append" type="warning" plain>
+                                Apply
+                            </Button>
+                        </el-input>
+                    </Tooltip>
                 </el-col>
             </el-row>
         </template>
@@ -93,7 +95,7 @@
 </template>
 
 <script>
-import { Button, Col, Input, Table, TableColumn, Row } from 'element-ui';
+import { Button, Col, Input, Table, TableColumn, Tooltip, Row } from 'element-ui';
 import lang from 'element-ui/lib/locale/lang/en';
 import locale from 'element-ui/lib/locale';
 
@@ -112,6 +114,7 @@ export default {
     Button,
     Table,
     TableColumn,
+    Tooltip,
     Row,
   },
   data() {

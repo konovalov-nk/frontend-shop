@@ -1,98 +1,101 @@
 <template>
     <div id="account_details">
-        <h4 class="component-header">
-            Account Details
-            <a @click="toggleDetails">
-                (click to {{ pageType('register') ? 'sign-in' : 'sign-up' }})
-            </a>
-        </h4>
-        <template v-if="pageType('register')">
-            <Form ref="form"
-                  :model="form"
-                  :label-position="form_label_position"
-                  :rules="rules"
-                  status-icon
-                  labwidth="120px">
-                <el-row :gutter="20">
-                    <el-col :span="12">
-                        <FormItem prop="first_name" label="First Name">
-                            <el-input v-model="form.first_name" />
+        <template v-if="!loggedIn || locked">
+            <h4 class="component-header">
+                Account Details
+                <a @click="toggleDetails" v-if="!loggedIn">
+                    (click to {{ pageType('register') ? 'sign-in' : 'sign-up' }})
+                </a>
+            </h4>
+            <template v-if="pageType('register')">
+                <Form ref="form"
+                      :model="form"
+                      :label-position="form_label_position"
+                      :rules="rules"
+                      :disabled="locked"
+                      status-icon
+                      labwidth="120px">
+                    <el-row :gutter="20">
+                        <el-col :span="12">
+                            <FormItem prop="first_name" label="First Name">
+                                <el-input v-model="form.first_name" />
+                            </FormItem>
+
+                            <FormItem prop="email" label="E-Mail">
+                                <el-input v-model="form.email" />
+                            </FormItem>
+
+                            <FormItem prop="post_code" label="Post Code">
+                                <el-input v-model="form.post_code" />
+                            </FormItem>
+                        </el-col>
+
+                        <el-col :span="12">
+                            <FormItem prop="last_name" label="Last Name">
+                                <el-input v-model="form.last_name" />
+                            </FormItem>
+
+                            <FormItem prop="city" label="City">
+                                <el-input v-model="form.city" />
+                            </FormItem>
+
+                            <FormItem prop="country" label="Country">
+                                <Select filterable v-model="form.country" placeholder="Please select your country">
+                                    <Option :label="country.name"
+                                            :value="country.ioc"
+                                            :key="country.ioc"
+                                            v-for="country in countries">
+                                    </Option>
+                                </Select>
+                            </FormItem>
+                        </el-col>
+                    </el-row>
+
+                    <template v-if="!locked">
+                        <hr />
+
+                        <el-row :gutter="20">
+                            <el-col :span="12">
+                                <FormItem auto-complete="off" prop="password" label="Password">
+                                    <el-input v-model="form.password" />
+                                </FormItem>
+                            </el-col>
+
+                            <el-col :span="12">
+                                <FormItem auto-complete="off" prop="password_confirmation" label="Password Confirm">
+                                    <el-input v-model="form.password_confirmation" />
+                                </FormItem>
+                            </el-col>
+                        </el-row>
+
+                        <FormItem>
+                            <Button type="primary" @click="submitForm('form')">Create</Button>
+                            <Button @click="resetForm('form')">Reset</Button>
                         </FormItem>
-
-                        <FormItem prop="email" label="E-Mail">
-                            <el-input v-model="form.email" />
-                        </FormItem>
-
-                        <FormItem prop="post_code" label="Post Code">
-                            <el-input v-model="form.post_code" />
-                        </FormItem>
-                    </el-col>
-
-                    <el-col :span="12">
-                        <FormItem prop="last_name" label="Last Name">
-                            <el-input v-model="form.last_name" />
-                        </FormItem>
-
-                        <FormItem prop="city" label="City">
-                            <el-input v-model="form.city" />
-                        </FormItem>
-
-                        <FormItem prop="country" label="Country">
-                            <Select filterable v-model="form.country" placeholder="Please select your country">
-                                <Option :label="country.name"
-                                        :value="country.ioc"
-                                        :key="country.ioc"
-                                        v-for="country in countries">
-                                </Option>
-                            </Select>
-                        </FormItem>
-                    </el-col>
-                </el-row>
-
-                <hr />
-
-                <el-row :gutter="20">
-                    <el-col :span="12">
-                        <FormItem auto-complete="off" prop="password" label="Password">
-                            <el-input v-model="form.password" />
-                        </FormItem>
-                    </el-col>
-
-                    <el-col :span="12">
-                        <FormItem auto-complete="off" prop="password_confirm" label="Password Confirm">
-                            <el-input v-model="form.password_confirm" />
-                        </FormItem>
-                    </el-col>
-                </el-row>
-
-                <template v-if="true">
-                    <FormItem>
-                        <Button type="primary" @click="submitForm('form')">Create</Button>
-                        <Button @click="resetForm('form')">Reset</Button>
+                    </template>
+                </Form>
+            </template>
+            <template v-else>
+                <Form ref="formLogin"
+                      class="form-login"
+                      :inline="true"
+                      :model="formLogin"
+                      :rules="rulesLogin"
+                      status-icon
+                      labwidth="120px">
+                    <FormItem prop="email" class="form-login-email">
+                        <el-input v-model="formLogin.email" placeholder="E-Mail" />
                     </FormItem>
-                </template>
-            </Form>
-        </template>
-        <template v-else>
-            <Form ref="formLogin"
-                  class="form-login"
-                  :inline="true"
-                  :model="formLogin"
-                  :rules="rulesLogin"
-                  status-icon
-                  labwidth="120px">
-                <FormItem prop="email" class="form-login-email">
-                    <el-input v-model="formLogin.email" placeholder="E-Mail" />
-                </FormItem>
 
-                <FormItem auto-complete="off" prop="password" class="form-login-password">
-                    <el-input v-model="formLogin.password" placeholder="Password" />
-                </FormItem>
+                    <FormItem auto-complete="off" prop="password" class="form-login-password">
+                        <el-input v-model="formLogin.password" placeholder="Password" />
+                    </FormItem>
 
-                <FormItem class="form-login-signin">
-                    <Button type="primary" @click="submitForm('formLogin')">Sign In</Button>
-                </FormItem>
-            </Form>
+                    <FormItem class="form-login-signin">
+                        <Button type="primary" @click="submitForm('formLogin')">Sign In</Button>
+                    </FormItem>
+                </Form>
+            </template>
         </template>
     </div>
 </template>
@@ -108,6 +111,7 @@ locale.use(lang);
 export default {
   name: 'AccountDetails',
   props: {
+    locked: false,
   },
   components: {
     'el-col': Col,
@@ -132,7 +136,7 @@ export default {
       }
     };
 
-    const validatePasswordConfirm = (rule, value, callback) => {
+    const validatePasswordConfirmation = (rule, value, callback) => {
       console.log('validateConfirm');
       if (value === '') {
         callback(new Error('Please input the password again'));
@@ -146,7 +150,7 @@ export default {
     return {
       loading: null,
       loadingLogin: null,
-      page_type: 'login',
+      page_type: 'register',
       form_label_position: 'top',
       form: {
         first_name: '',
@@ -156,7 +160,7 @@ export default {
         post_code: '',
         country: 'USA',
         password: '',
-        password_confirm: '',
+        password_confirmation: '',
       },
       formLogin: {
         email: '',
@@ -196,8 +200,8 @@ export default {
         password: [
           { validator: validatePassword, trigger: 'blur' },
         ],
-        password_confirm: [
-          { validator: validatePasswordConfirm, trigger: 'blur' },
+        password_confirmation: [
+          { validator: validatePasswordConfirmation, trigger: 'blur' },
         ],
       },
       rulesLogin: {
@@ -214,6 +218,9 @@ export default {
     };
   },
   computed: {
+    loggedIn() {
+      return this.$store.getters['user/loggedIn'];
+    },
   },
   methods: {
     pageType(type) {
@@ -223,43 +230,45 @@ export default {
       this.page_type = this.page_type === 'register' ? 'login' : 'register';
     },
     submitForm(formName) {
+      const method = formName === 'form' ? 'register' : 'login';
       this.$refs[formName].validate((valid) => {
-        if (valid) {
-          console.log('submit!');
-          formName === 'form' ? this.register() : this.login();
-        } else {
-          console.log('error submit!!');
+        if (!valid) {
           return false;
         }
+
+        this[method]();
+
+        return true;
       });
     },
     register() {
-      // this.form
       this.showLoading('form');
-      setTimeout(() => {
+      this.$store.dispatch('user/register', this.form).then(() => {
         this.closeLoading('form');
-      }, 2000);
+      }).catch((e) => {
+        console.log('error');
+        console.log(e);
+      });
     },
     login() {
-      // this.formLogin
       this.showLoading('formLogin');
-      setTimeout(() => {
+      this.$store.dispatch('user/fetchJWT', this.formLogin.email, this.formLogin.password).then(() => {
         this.closeLoading('formLogin');
-      }, 2000);
+      }).catch((e) => {
+        console.log('error');
+        console.log(e);
+      });
     },
     resetForm(formName) {
       this.$refs[formName].resetFields();
     },
-    onSubmit() {
-
-    },
     showLoading(formName) {
-      let loading = formName === 'form' ? 'loading' : 'loadingLogin',
-        sign_type = formName === 'form' ? 'up' : 'in';
+      const loading = formName === 'form' ? 'loading' : 'loadingLogin';
+      const signType = formName === 'form' ? 'up' : 'in';
 
       this[loading] = this.$loading({
         target: this.$refs[formName].$el,
-        text: `Trying to sign-${sign_type}...`,
+        text: `Trying to sign-${signType}...`,
         spinner: 'el-icon-loading',
         background: 'rgba(0, 0, 0, 0.6)',
       });
@@ -271,8 +280,8 @@ export default {
 
   },
   mounted() {
-    const countries_unique = Object.values(countryData.countries.all.reduce((acc, cur) => Object.assign(acc, { [cur.ioc]: cur }), {}));
-    this.countries = countries_unique
+    const countriesUnique = Object.values(countryData.countries.all.reduce((acc, cur) => Object.assign(acc, { [cur.ioc]: cur }), {}));
+    this.countries = countriesUnique
       .map((c, i) => ({
         id: i,
         name: c.name,

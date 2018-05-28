@@ -1,6 +1,7 @@
 <template>
     <ContentGridSimple :active="2">
         <template slot="content">
+            <AccountDetails :locked="true" />
             <Cart cartType="simple" :locked="true"/>
         </template>
         <template slot="buttons">
@@ -23,6 +24,7 @@
 
 <script>
 import ContentGridSimple from '@/components/layouts/ContentGridSimple.vue';
+import AccountDetails from '@/components/AccountDetails.vue';
 import Cart from '@/components/Cart.vue';
 import { Button } from 'element-ui';
 import PayPal from 'vue-paypal-checkout';
@@ -30,7 +32,7 @@ import PayPal from 'vue-paypal-checkout';
 export default {
   name: 'ConfirmOrderPage',
   components: {
-    Button, Cart, ContentGridSimple, PayPal,
+    AccountDetails, Button, Cart, ContentGridSimple, PayPal,
   },
   data() {
     return {

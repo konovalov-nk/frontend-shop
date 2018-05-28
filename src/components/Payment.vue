@@ -9,14 +9,16 @@
         <el-row :gutter="20">
             <el-col>
                 <Radio v-model="payment" label="1" border>PayPal</Radio>
-                <Radio v-model="payment" label="2" border disabled>Credit Card</Radio>
+                <Tooltip content="We are not supporting credit cards at the moment, but will be soon">
+                    <Radio v-model="payment" label="2" border disabled>Credit Card</Radio>
+                </Tooltip>
             </el-col>
         </el-row>
     </div>
 </template>
 
 <script>
-import { Radio, Row, Col } from 'element-ui';
+import { Radio, Row, Col, Tooltip } from 'element-ui';
 
 export default {
   name: 'Payment',
@@ -24,6 +26,7 @@ export default {
     'el-col': Col,
     'el-row': Row,
     Radio,
+    Tooltip,
   },
   data() {
     return {

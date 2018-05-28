@@ -49,7 +49,9 @@ export default {
   },
   computed: {
     confirmDisabled() {
-      return this.$store.getters['cart/items'].length === 0;
+      if (this.$store.getters['cart/items'].length === 0) return false;
+
+      return !this.$store.getters['user/loggedIn'];
     },
   },
 };
