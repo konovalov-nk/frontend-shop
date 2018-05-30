@@ -16,19 +16,27 @@ const storeModal = {
     open({ commit }, options) {
       Modals.confirm(options.message || 'No message', {
         confirmButtonText: 'OK',
-        showCancelButton: false,
+        showCancelButton: options.showCancel || false,
         center: true,
         type: options.type || 'warning',
       }).then(() => {
-        // Modals.message({
-        //   type: 'success',
-        //   message: 'Delete completed',
-        // });
+        if (options.confirm) {
+          const { confirm } = options;
+          const { callback = () => {}, message, type = 'success' } = confirm;
+          callback();
+          if (message) {
+            Modals.message({ type, message });
+          }
+        }
       }).catch(() => {
-        // Modals.message({
-        //   type: 'info',
-        //   message: 'Delete canceled',
-        // });
+        if (options.cancel) {
+          const { cancel } = options;
+          const { callback = () => {}, message, type = 'info' } = cancel;
+          callback();
+          if (message) {
+            Modals.message({ type, message });
+          }
+        }
       });
     },
   },

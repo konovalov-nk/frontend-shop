@@ -138,8 +138,8 @@ export default {
     addToCart() {
       this.$store.dispatch('cart/add', this.getItem());
 
-      Notification.info({
-        title: 'Info',
+      Notification.success({
+        title: 'Add to Cart',
         message: 'You have added an item to the cart',
       });
     },

@@ -147,6 +147,8 @@ export default {
       }
     };
 
+    const isLocked = this.locked;
+
     return {
       loading: null,
       loadingLogin: null,
@@ -169,39 +171,41 @@ export default {
       rules: {
         first_name: [
           {
-            type: 'string', whitespace: true, required: true, message: 'First Name is required', trigger: 'blur',
+            type: 'string', whitespace: true, required: !isLocked, message: 'First Name is required', trigger: 'blur',
           },
         ],
         last_name: [
           {
-            type: 'string', whitespace: true, required: true, message: 'Last Name is required', trigger: 'blur',
+            type: 'string', whitespace: true, required: !isLocked, message: 'Last Name is required', trigger: 'blur',
           },
         ],
         email: [
           {
-            type: 'email', required: true, message: 'E-Mail is required', trigger: 'blur',
+            type: 'email', required: !isLocked, message: 'E-Mail is required', trigger: 'blur',
           },
         ],
         city: [
           {
-            type: 'string', whitespace: true, required: true, message: 'City is required', trigger: 'blur',
+            type: 'string', whitespace: true, required: !isLocked, message: 'City is required', trigger: 'blur',
           },
         ],
         post_code: [
           {
-            type: 'string', whitespace: true, required: true, message: 'Post Code is required', trigger: 'blur',
+            type: 'string', whitespace: true, required: !isLocked, message: 'Post Code is required', trigger: 'blur',
           },
         ],
         country: [
           {
-            type: 'string', whitespace: true, required: true, message: 'Country is required', trigger: 'blur',
+            type: 'string', whitespace: true, required: !isLocked, message: 'Country is required', trigger: 'blur',
           },
         ],
         password: [
           { validator: validatePassword, trigger: 'blur' },
+          { min: 6, trigger: 'change', message: 'Password must be at least 6 characters' },
         ],
         password_confirmation: [
           { validator: validatePasswordConfirmation, trigger: 'blur' },
+          { min: 6, trigger: 'change', message: 'Password must be at least 6 characters' },
         ],
       },
       rulesLogin: {
@@ -219,7 +223,7 @@ export default {
   },
   computed: {
     userData() {
-      return this.$store.getters['user/userData'];
+      return this.$store.getters['user/data'];
     },
     loggedIn() {
       return this.$store.getters['user/loggedIn'];
@@ -261,7 +265,7 @@ export default {
         password_confirmation: this.formLogin.password,
       };
 
-      this.$store.dispatch('user/fetchJWT', user).then((v) => {
+      this.$store.dispatch('user/login', user).then((v) => {
         console.log(v);
         this.closeLoading('formLogin');
       }).catch((e) => {

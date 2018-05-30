@@ -130,8 +130,19 @@ main {
     margin: 0 auto;
 
     display: grid;
-    grid-gap: 24pt;
+    grid-gap: 10pt;
     grid-template-areas: "steps" "buttons";
+}
+
+#login-bar {
+    text-align: right;
+    padding: 0 0 8px 0;
+    border-bottom: 1px solid lightgrey;
+}
+
+.login-bar--name {
+    font-weight: bold;
+    margin-right: 10px;
 }
 
 @media only screen and (min-width: 1000px) {

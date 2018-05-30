@@ -1,5 +1,6 @@
 /* eslint-disable no-param-reassign */
 
+import { Notification } from 'element-ui';
 import store from '../store';
 
 const hostname = process.env.VUE_APP_API_HOSTNAME;
@@ -68,7 +69,7 @@ const storeUser = {
     jwtData: (state, getters) => (state.currentJWT ? JSON.parse(atob(getters.jwt.split('.')[1])) : null),
     jwtSubject: (state, getters) => (getters.jwtData ? getters.jwtData.sub : null),
     jwtIssuer: (state, getters) => (getters.jwtData ? getters.jwtData.iss : null),
-    userData: state => state.user,
+    data: state => state.user,
     loggedIn: state => state.loggedIn,
   },
 
@@ -76,8 +77,8 @@ const storeUser = {
     setJWT(state, jwt) {
       state.currentJWT = jwt;
     },
-    setUser(state, userData) {
-      state.user = userData;
+    setUser(state, data) {
+      state.user = data;
     },
     setloggedIn(state, loggedIn) {
       state.loggedIn = loggedIn;
@@ -111,6 +112,11 @@ const storeUser = {
           commit('setJWT', jwt);
           commit('setloggedIn', jwt.length > 0);
 
+          Notification.success({
+            title: 'Sign-up',
+            message: 'You have successfully signed up. Please, check your email.',
+          });
+
           dispatch('fetchData');
 
           return response;
@@ -121,7 +127,7 @@ const storeUser = {
         });
     },
 
-    async fetchJWT({ commit, dispatch }, user) {
+    async login({ commit, dispatch }, user) {
       return fetch(`${protocol}://${hostname}/users/sign_in`, {
         method: 'POST',
         headers: {
@@ -144,6 +150,11 @@ const storeUser = {
 
           commit('setJWT', jwt);
           commit('setloggedIn', jwt.length > 0);
+
+          Notification.success({
+            title: 'Sign-in',
+            message: 'You have successfully logged in.',
+          });
 
           dispatch('fetchData');
 
@@ -172,6 +183,36 @@ const storeUser = {
 
           const content = await response.json();
           commit('setUser', content);
+
+          return response;
+        })
+        .catch((reason) => {
+          console.log('reason');
+          console.log(reason);
+        });
+    },
+
+    async logout({ commit, state }) {
+      return fetch(`${protocol}://${hostname}/users/sign_out`, {
+        method: 'DELETE',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${state.currentJWT}`,
+        },
+      })
+        .then(handleErrors)
+        .then((response) => {
+          console.log('response is okay');
+          console.log(response);
+
+          commit('setJWT', '');
+          commit('setloggedIn', false);
+
+          Notification.success({
+            title: 'Sign-out',
+            message: 'You have successfully logged out.',
+          });
 
           return response;
         })

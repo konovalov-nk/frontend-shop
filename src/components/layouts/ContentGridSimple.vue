@@ -13,6 +13,7 @@
                 </Steps>
             </div>
             <div id="content-grid-simple">
+                <LoginBar />
                 <slot name="content"/>
                 <div id="buttons-bar">
                     <slot name="buttons"/>
@@ -23,7 +24,8 @@
 </template>
 
 <script>
-import { Steps, Step } from 'element-ui';
+import { Button, ButtonGroup, Steps, Step } from 'element-ui';
+import LoginBar from '@/components/LoginBar.vue';
 
 export default {
   name: 'ContentGrid',
@@ -31,7 +33,7 @@ export default {
     active: 0,
   },
   components: {
-    Steps, Step,
+    Button, ButtonGroup, LoginBar, Steps, Step,
   },
 };
 </script>
