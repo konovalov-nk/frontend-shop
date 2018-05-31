@@ -123,6 +123,7 @@ const storeUser = {
 
           commit('setJWT', jwt);
           commit('setloggedIn', jwt.length > 0);
+          localStorage.setItem('APP_KEY_JWT', jwt);
 
           Notification.success({
             title: 'Sign-up',
@@ -162,6 +163,7 @@ const storeUser = {
 
           commit('setJWT', jwt);
           commit('setloggedIn', jwt.length > 0);
+          localStorage.setItem('APP_KEY_JWT', jwt);
 
           Notification.success({
             title: 'Sign-in',
@@ -178,11 +180,15 @@ const storeUser = {
         });
     },
 
+    async setJWTFetch({ commit, dispatch }, jwt) {
+      commit('setJWT', jwt);
+      dispatch('fetchData');
+    },
+
     async fetchData({
       commit, dispatch, state, getters,
     }) {
       const userId = getters.jwtData.sub;
-      dispatch('fetchOrder');
       return fetch(`${protocol}://${hostname}/users/show/${userId}`, {
         method: 'GET',
         headers: {
@@ -198,6 +204,8 @@ const storeUser = {
 
           const content = await response.json();
           commit('setUser', content);
+          commit('setloggedIn', content.id > 0);
+          dispatch('fetchOrder');
 
           return response;
         })
@@ -251,6 +259,7 @@ const storeUser = {
           console.log('response is okay');
           console.log(response);
 
+          localStorage.setItem('APP_KEY_JWT', '');
           commit('setJWT', '');
           commit('setloggedIn', false);
           store.dispatch('cart/setOrderId', 0, { root: true });
