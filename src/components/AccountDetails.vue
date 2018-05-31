@@ -3,9 +3,11 @@
         <template v-if="!loggedIn || locked">
             <h4 class="component-header">
                 Account Details
-                <a @click="toggleDetails" v-if="!loggedIn">
-                    (click to {{ pageType('register') ? 'sign-in' : 'sign-up' }})
-                </a>
+                <template v-if="false">
+                    <a @click="toggleDetails" v-if="!loggedIn">
+                        (click to {{ pageType('register') ? 'sign-in' : 'sign-up' }})
+                    </a>
+                </template>
             </h4>
             <template v-if="pageType('register')">
                 <Form ref="form"
@@ -57,13 +59,13 @@
                         <el-row :gutter="20">
                             <el-col :span="12">
                                 <FormItem auto-complete="off" prop="password" label="Password">
-                                    <el-input v-model="form.password" />
+                                    <el-input type="password" v-model="form.password" />
                                 </FormItem>
                             </el-col>
 
                             <el-col :span="12">
                                 <FormItem auto-complete="off" prop="password_confirmation" label="Password Confirm">
-                                    <el-input v-model="form.password_confirmation" />
+                                    <el-input type="password" v-model="form.password_confirmation" />
                                 </FormItem>
                             </el-col>
                         </el-row>
@@ -75,7 +77,8 @@
                     </template>
                 </Form>
             </template>
-            <template v-else>
+
+            <template v-if="false">
                 <Form ref="formLogin"
                       class="form-login"
                       :inline="true"
@@ -88,7 +91,7 @@
                     </FormItem>
 
                     <FormItem auto-complete="off" prop="password" class="form-login-password">
-                        <el-input v-model="formLogin.password" placeholder="Password" />
+                        <el-input type="password" v-model="formLogin.password" placeholder="Password" />
                     </FormItem>
 
                     <FormItem class="form-login-signin">
@@ -201,11 +204,11 @@ export default {
         ],
         password: [
           { validator: validatePassword, trigger: 'blur' },
-          { min: 6, trigger: 'change', message: 'Password must be at least 6 characters' },
+          { min: 6, trigger: 'blur', message: 'Password must be at least 6 characters' },
         ],
         password_confirmation: [
           { validator: validatePasswordConfirmation, trigger: 'blur' },
-          { min: 6, trigger: 'change', message: 'Password must be at least 6 characters' },
+          { min: 6, trigger: 'blur', message: 'Password must be at least 6 characters' },
         ],
       },
       rulesLogin: {

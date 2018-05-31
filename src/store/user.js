@@ -178,8 +178,11 @@ const storeUser = {
         });
     },
 
-    async fetchData({ commit, state, getters }) {
+    async fetchData({
+      commit, dispatch, state, getters,
+    }) {
       const userId = getters.jwtData.sub;
+      dispatch('fetchOrder');
       return fetch(`${protocol}://${hostname}/users/show/${userId}`, {
         method: 'GET',
         headers: {
@@ -195,6 +198,36 @@ const storeUser = {
 
           const content = await response.json();
           commit('setUser', content);
+
+          return response;
+        })
+        .catch((reason) => {
+          console.log('reason');
+          console.log(reason);
+        });
+    },
+
+    async fetchOrder({ state }) {
+      return fetch(`${protocol}://${hostname}/cart`, {
+        method: 'GET',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${state.currentJWT}`,
+        },
+      })
+        .then(handleErrors)
+        .then(async (response) => {
+          console.log('response is okay');
+          console.log(response);
+
+          const content = await response.json();
+          store.dispatch('cart/setOrderId', content.order.id, { root: true });
+          if (content.order.id > 0) {
+            store.dispatch('cart/setItems', content.items, { root: true });
+            store.dispatch('cart/changeOrderDetails', content.order.details, { root: true });
+            store.dispatch('cart/applyCoupon', content.order.coupon, { root: true });
+          }
 
           return response;
         })
@@ -220,6 +253,11 @@ const storeUser = {
 
           commit('setJWT', '');
           commit('setloggedIn', false);
+          store.dispatch('cart/setOrderId', 0, { root: true });
+
+          if (!['index'].includes(router.currentRoute.name)) {
+            router.push('/');
+          }
 
           Notification.success({
             title: 'Sign-out',
@@ -235,7 +273,7 @@ const storeUser = {
     },
 
     async createOrder({ state }) {
-      return fetch(`${protocol}://${hostname}/cart/create`, {
+      return fetch(`${protocol}://${hostname}/cart`, {
         method: 'POST',
         headers: {
           Accept: 'application/json',
@@ -245,18 +283,57 @@ const storeUser = {
         body: JSON.stringify({
           order: {
             details: store.getters['cart/orderDetails'],
+            coupon: store.getters['cart/coupon'],
           },
           order_items: store.getters['cart/itemsFormattedBackend'],
         }),
       })
         .then(handleErrors)
-        .then((response) => {
+        .then(async (response) => {
           console.log('response is okay');
           console.log(response);
 
+          const content = await response.json();
+          store.dispatch('cart/setOrderId', content.order.id, { root: true });
+
           Notification.success({
             title: 'Order created',
-            message: 'You have successfully created an order.',
+            message: `You have successfully created the order #${content.order.id}.`,
+          });
+
+          return response;
+        })
+        .catch((reason) => {
+          console.log('reason');
+          console.log(reason);
+        });
+    },
+    async updateOrder({ state }) {
+      return fetch(`${protocol}://${hostname}/cart`, {
+        method: 'PUT',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${state.currentJWT}`,
+        },
+        body: JSON.stringify({
+          order: {
+            details: store.getters['cart/orderDetails'],
+            coupon: store.getters['cart/coupon'],
+          },
+          order_items: store.getters['cart/itemsFormattedBackend'],
+        }),
+      })
+        .then(handleErrors)
+        .then(async (response) => {
+          console.log('response is okay');
+          console.log(response);
+
+          const content = await response.json();
+
+          Notification.success({
+            title: 'Order created',
+            message: `You have successfully updated order #${content.order.id}.`,
           });
 
           return response;

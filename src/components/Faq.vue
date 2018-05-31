@@ -1,5 +1,5 @@
 <template>
-    <div id="faq">
+    <div id="faq-none">
         <h2>FAQ:</h2>
         <div id="faq-answers">
             <el-collapse v-model="active_name">

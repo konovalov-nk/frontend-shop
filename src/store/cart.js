@@ -29,12 +29,12 @@ const getPrice = (item, discount) => {
   valuePerGame += (item.specials.includes('stream') ? BONUS_STREAM : 0);
   valuePerGame += (item.specials.includes('oldbooster') ? BONUS_OLD_BOOSTER : 0);
 
-  let total = item.amount * valuePerGame;
-  if (item.amount >= 5) {
-    if (item.amount < 10) {
+  let total = item.quantity * valuePerGame;
+  if (item.quantity >= 5) {
+    if (item.quantity < 10) {
       total -= 5;
     } else {
-      total -= ((item.amount - (item.amount % 5)) / 5) * valuePerGame;
+      total -= ((item.quantity - (item.quantity % 5)) / 5) * valuePerGame;
     }
   }
 
@@ -56,19 +56,31 @@ const getDescription = (item) => {
 const getGame = (item) => {
   const boosting = 'Boosting';
   const games = {
-    fortnite: `Fortnite ${boosting}`,
-    lol: `League of Legends ${boosting}`,
-    overwatch: `Overwatch ${boosting}`,
+    1: `Fortnite ${boosting}`,
+    2: `League of Legends ${boosting}`,
+    3: `Overwatch ${boosting}`,
   };
-  return typeof games[item.game] === 'undefined' ? 'Unknown Game' : games[item.game].trim();
+  return typeof games[item.product_id] === 'undefined' ? 'Unknown Game' : games[item.product_id].trim();
+};
+
+const getSpecials = (item) => {
+  if (typeof item.specials === 'string') {
+    return item.specials;
+  }
+
+  if (typeof item.specials === 'object') {
+    return item.specials.join(',');
+  }
+
+  return '';
 };
 
 /**
- * game: 'fortnite', 'lol', 'overwatch', ...
+ * product_id: 1
  * mode: 'solo', 'duo', 'squad'
  * platform: 'pc', 'ps4', 'xbox'
- * amount: 10
- * specials: 'end9, stream, oldbooster'
+ * quantity: 10
+ * specials: 'end9,stream,oldbooster'
  */
 const storeCart = {
   namespaced: true,
@@ -79,6 +91,7 @@ const storeCart = {
     total: 0,
     counter: 1,
     details: '',
+    order_id: 0,
   },
   mutations: {
     addItem(state, item) {
@@ -92,10 +105,10 @@ const storeCart = {
     increaseItem(state, id) {
       state.items = state.items.map((i) => {
         if (i.id === id) {
-          i.amount += 1;
+          i.quantity += 1;
         }
 
-        i.amount = i.amount > 100 ? 100 : i.amount;
+        i.quantity = i.quantity > 100 ? 100 : i.quantity;
 
         return i;
       });
@@ -103,10 +116,10 @@ const storeCart = {
     decreaseItem(state, id) {
       state.items = state.items.map((i) => {
         if (i.id === id) {
-          i.amount -= 1;
+          i.quantity -= 1;
         }
 
-        i.amount = i.amount < 1 ? 1 : i.amount;
+        i.quantity = i.quantity < 1 ? 1 : i.quantity;
 
         return i;
       });
@@ -122,6 +135,12 @@ const storeCart = {
     },
     changeDetails(state, details) {
       state.details = details;
+    },
+    changeOrderId(state, orderId) {
+      state.order_id = orderId;
+    },
+    changeItems(state, items) {
+      state.items = items;
     },
   },
   actions: {
@@ -155,7 +174,18 @@ const storeCart = {
     changeOrderDetails({ commit }, details) {
       commit('changeDetails', details);
     },
-
+    changeCoupon({ commit }, coupon) {
+      commit('changeCoupon', coupon);
+    },
+    setOrderId({ commit }, orderId) {
+      commit('changeOrderId', orderId);
+    },
+    setItems({ commit }, items) {
+      commit('changeItems', []);
+      items.forEach((item) => {
+        commit('addItem', item);
+      });
+    },
   },
   getters: {
     totalFormatted(state) {
@@ -163,25 +193,30 @@ const storeCart = {
 
       return `$${state.total.toFixed(2)}${discountString}`;
     },
+    coupon: state => (state.coupon ? state.coupon : ''),
     currentCoupon: state => (state.coupon ? `Coupon applied: ${state.coupon}` : ''),
     total: state => state.total.toFixed(2),
     items: state => state.items,
     orderDetails: state => state.details,
+    orderId: state => state.order_id,
+    orderNumberFormatted: state => (state.order_id > 0 ? ` (Order #${state.order_id})` : ''),
     itemsFormatted(state) {
       return state.items.map(i => ({
         id: i.id,
         product_name: getGame(i),
         product_description: getDescription(i),
-        quantity: i.amount,
+        quantity: i.quantity,
         total: `$${getPrice(i, state.discount).toFixed(2)}`,
       }));
     },
     itemsFormattedBackend(state) {
       return state.items.map(i => ({
         product_id: i.product_id,
-        quantity: i.amount,
-        price: `$${getPrice(i, state.discount).toFixed(2)}`,
-        specials: i.specials,
+        mode: i.mode,
+        platform: i.platform,
+        quantity: i.quantity,
+        price: getPrice(i, state.discount).toFixed(2),
+        specials: getSpecials(i),
       }));
     },
     itemsFormattedPayPal(state) {

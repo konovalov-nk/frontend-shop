@@ -35,14 +35,16 @@ export default {
   methods: {
     payment() {
       if (this.$store.getters['cart/items'].length !== 0) {
+        const type = this.$store.getters['cart/orderId'] === 0 ? 'Creating' : 'Updating';
         this.loading = this.$loading({
-          text: 'Creating an order for you...',
+          text: `${type} an order for you...`,
           spinner: 'el-icon-loading',
           fullscreen: true,
           background: 'rgba(0, 0, 0, 0.6)',
         });
 
-        this.$store.dispatch('user/createOrder').then(() => {
+        const dispatchType = type === 'Creating' ? 'create' : 'update';
+        this.$store.dispatch(`user/${dispatchType}Order`).then(() => {
           this.loading.close();
           this.$router.push('payment');
         }).catch(() => {

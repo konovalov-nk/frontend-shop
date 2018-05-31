@@ -48,10 +48,10 @@
             </div>
         </fieldset>
 
-        <fieldset id="amount-field">
+        <fieldset id="quantity-field">
             <legend>Wins</legend>
-            <el-slider @change="updateTotal" :min="1" v-model="amount"/>
-            <div id="amount-value">{{ amount }} wins</div>
+            <el-slider @change="updateTotal" :min="1" v-model="quantity"/>
+            <div id="quantity-value">{{ quantity }} wins</div>
         </fieldset>
 
         <fieldset id="specials-field">
@@ -109,7 +109,7 @@ export default {
   data: () => ({
     mode: 'solo',
     platform: 'pc',
-    amount: 10,
+    quantity: 10,
     end9: false,
     stream: false,
     oldbooster: false,
@@ -127,7 +127,7 @@ export default {
         product_id: 1,
         mode: this.mode,
         platform: this.platform,
-        amount: this.amount,
+        quantity: this.quantity,
         specials,
       };
     },

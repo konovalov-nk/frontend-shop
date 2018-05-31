@@ -6,7 +6,7 @@
         </template>
         <template slot="buttons">
             <router-link :to="{name: 'confirm_order'}">
-                <Button class="back-confirm" type="primary" disabled>Back</Button>
+                <Button class="back-confirm" type="primary">Back</Button>
             </router-link>
 
             <PayPal

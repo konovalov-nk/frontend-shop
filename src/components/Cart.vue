@@ -1,6 +1,6 @@
 <template>
     <div :id="cart_type">
-        <h4>Cart</h4>
+        <h4>Cart{{ orderNumber }}</h4>
         <Table
                 :data="table_data"
                 size="medium"
@@ -123,7 +123,6 @@ export default {
   },
   data() {
     return {
-      coupon: '',
       example_data: [{
         id: 1,
         product_name: 'LoL ELO Boost',
@@ -147,6 +146,14 @@ export default {
     };
   },
   computed: {
+    coupon: {
+      get() {
+        return this.$store.getters['cart/coupon'];
+      },
+      set(coupon) {
+        return this.$store.dispatch('cart/changeCoupon', coupon);
+      },
+    },
     details: {
       get() {
         return this.$store.getters['cart/orderDetails'];
@@ -160,6 +167,9 @@ export default {
     },
     cart_type() {
       return this.cartType === '' ? 'cart' : 'cart-simple';
+    },
+    orderNumber() {
+      return this.$store.getters['cart/orderNumberFormatted'];
     },
   },
   methods: {

@@ -1,23 +1,35 @@
 <template>
-    <ContentGrid :active="0">
+    <ContentGridSimple :active="0">
         <template slot="content">
-            <Faq/>
-            <OrderForm/>
+            <el-row :gutter="40">
+                <el-col :span="14">
+                    <Faq/>
+                </el-col>
+                <el-col :span="10">
+                    <OrderForm/>
+                </el-col>
+            </el-row>
         </template>
-    </ContentGrid>
+    </ContentGridSimple>
 </template>
 
 <script>
-import ContentGrid from '@/components/layouts/ContentGrid.vue';
+import ContentGridSimple from '@/components/layouts/ContentGridSimple.vue';
 import Faq from '@/components/Faq.vue';
 import OrderForm from '@/components/OrderForm.vue';
 import Cart from '@/components/Cart.vue';
-import { Button } from 'element-ui';
+import { Button, Row, Col } from 'element-ui';
 
 export default {
   name: 'IndexPage',
   components: {
-    Button, Cart, ContentGrid, Faq, OrderForm,
+    'el-row': Row,
+    'el-col': Col,
+    Button,
+    Cart,
+    ContentGridSimple,
+    Faq,
+    OrderForm,
   },
 };
 </script>
