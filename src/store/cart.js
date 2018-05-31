@@ -78,6 +78,7 @@ const storeCart = {
     coupon: '',
     total: 0,
     counter: 1,
+    details: '',
   },
   mutations: {
     addItem(state, item) {
@@ -119,6 +120,9 @@ const storeCart = {
     changeCoupon(state, coupon) {
       state.coupon = coupon;
     },
+    changeDetails(state, details) {
+      state.details = details;
+    },
   },
   actions: {
     add({ commit }, item) {
@@ -139,7 +143,7 @@ const storeCart = {
     },
     applyCoupon({ commit }, coupon) {
       let discount = 0;
-      if (coupon === 'FORTNITE1') discount = 0.1;
+      if (coupon.toLowerCase() === 'fortnite1') discount = 0.1;
 
       if (discount === 0) {
         coupon = '';
@@ -148,6 +152,10 @@ const storeCart = {
       commit('changeDiscount', discount);
       commit('calculateTotal');
     },
+    changeOrderDetails({ commit }, details) {
+      commit('changeDetails', details);
+    },
+
   },
   getters: {
     totalFormatted(state) {
@@ -158,6 +166,7 @@ const storeCart = {
     currentCoupon: state => (state.coupon ? `Coupon applied: ${state.coupon}` : ''),
     total: state => state.total.toFixed(2),
     items: state => state.items,
+    orderDetails: state => state.details,
     itemsFormatted(state) {
       return state.items.map(i => ({
         id: i.id,
@@ -165,6 +174,14 @@ const storeCart = {
         product_description: getDescription(i),
         quantity: i.amount,
         total: `$${getPrice(i, state.discount).toFixed(2)}`,
+      }));
+    },
+    itemsFormattedBackend(state) {
+      return state.items.map(i => ({
+        product_id: i.product_id,
+        quantity: i.amount,
+        price: `$${getPrice(i, state.discount).toFixed(2)}`,
+        specials: i.specials,
       }));
     },
     itemsFormattedPayPal(state) {

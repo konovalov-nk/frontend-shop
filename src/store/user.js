@@ -2,6 +2,7 @@
 
 import { Notification } from 'element-ui';
 import store from '../store';
+import router from '../router';
 
 const hostname = process.env.VUE_APP_API_HOSTNAME;
 const protocol = process.env.VUE_APP_API_SSL === 'true' ? 'https' : 'http';
@@ -23,6 +24,12 @@ const handleErrors = async (response) => {
     }
 
     errorMessage = errorMessage || response.statusText;
+
+    if (errorMessage === 'Signature has expired') {
+      errorMessage = 'Your session has timed out. Please log in again.';
+      store.dispatch('user/setLoggedOut');
+      router.push('index');
+    }
 
     store.dispatch('modal/open', {
       message: errorMessage,
@@ -86,6 +93,11 @@ const storeUser = {
   },
 
   actions: {
+    setLoggedOut({ commit }) {
+      commit('setloggedIn', '');
+      commit('setloggedIn', false);
+      commit('setUser', {});
+    },
     async register({ commit, dispatch }, formData) {
       return fetch(`${protocol}://${hostname}/users`, {
         method: 'POST',
@@ -212,6 +224,39 @@ const storeUser = {
           Notification.success({
             title: 'Sign-out',
             message: 'You have successfully logged out.',
+          });
+
+          return response;
+        })
+        .catch((reason) => {
+          console.log('reason');
+          console.log(reason);
+        });
+    },
+
+    async createOrder({ state }) {
+      return fetch(`${protocol}://${hostname}/cart/create`, {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${state.currentJWT}`,
+        },
+        body: JSON.stringify({
+          order: {
+            details: store.getters['cart/orderDetails'],
+          },
+          order_items: store.getters['cart/itemsFormattedBackend'],
+        }),
+      })
+        .then(handleErrors)
+        .then((response) => {
+          console.log('response is okay');
+          console.log(response);
+
+          Notification.success({
+            title: 'Order created',
+            message: 'You have successfully created an order.',
           });
 
           return response;

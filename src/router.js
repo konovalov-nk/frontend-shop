@@ -4,6 +4,7 @@ import Router from 'vue-router';
 import Index from './views/Index.vue';
 import Checkout from './views/Checkout.vue';
 import ConfirmOrder from './views/ConfirmOrder.vue';
+import Payment from './views/Payment.vue';
 import Finish from './views/Finish.vue';
 
 Vue.use(Router);
@@ -34,6 +35,12 @@ export default new Router({
       path: '/confirm',
       name: 'confirm_order',
       component: ConfirmOrder,
+      beforeEnter: checkCart,
+    },
+    {
+      path: '/payment',
+      name: 'payment',
+      component: Payment,
       beforeEnter: checkCart,
     },
     {

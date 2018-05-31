@@ -8,16 +8,9 @@
             <router-link :to="{name: 'checkout'}">
                 <Button class="back-confirm" type="primary">Back</Button>
             </router-link>
-
-            <PayPal
-                    :amount="totalAmount"
-                    currency="USD"
-                    :client="paypal.credentials"
-                    :button-style="paypal.style"
-                    @payment-completed="paypalComplete"
-                    :items="paypal_items"
-                    env="sandbox">
-            </PayPal>
+            <Button @click="payment" :disabled="paymentDisabled()" type="primary">
+                Payout
+            </Button>
         </template>
     </ContentGridSimple>
 </template>
@@ -36,30 +29,31 @@ export default {
   },
   data() {
     return {
-      paypal: {
-        credentials: {
-          sandbox: 'AcxHfWkfclw4WMUj35YyOrXgjUAajk6qTuNa0QbV7AQIQc34mKwmbEQBpkaFerzHznezNLaH_THXsL1m',
-        },
-        style: {
-          label: 'checkout',
-          size: 'medium',
-          shape: 'rect',
-          color: 'blue',
-        },
-      },
+      loading: false,
     };
   },
-  computed: {
-    totalAmount() {
-      return this.$store.getters['cart/total'];
-    },
-    paypal_items() {
-      return this.$store.getters['cart/itemsFormattedPayPal'];
-    },
-  },
   methods: {
-    paypalComplete() {
-      this.$router.push('finish');
+    payment() {
+      if (this.$store.getters['cart/items'].length !== 0) {
+        this.loading = this.$loading({
+          text: 'Creating an order for you...',
+          spinner: 'el-icon-loading',
+          fullscreen: true,
+          background: 'rgba(0, 0, 0, 0.6)',
+        });
+
+        this.$store.dispatch('user/createOrder').then(() => {
+          this.loading.close();
+          this.$router.push('payment');
+        }).catch(() => {
+          this.loading.close();
+        });
+      }
+    },
+    paymentDisabled() {
+      if (this.$store.getters['cart/items'].length === 0) return false;
+
+      return !this.$store.getters['user/loggedIn'];
     },
   },
 };

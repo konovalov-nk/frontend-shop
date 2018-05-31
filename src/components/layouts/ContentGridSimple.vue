@@ -9,6 +9,7 @@
                     <Step title="Choose your package"/>
                     <Step title="Checkout"/>
                     <Step title="Confirm order"/>
+                    <Step title="Payment"/>
                     <Step title="Finish"/>
                 </Steps>
             </div>

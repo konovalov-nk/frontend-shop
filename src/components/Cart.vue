@@ -73,7 +73,11 @@
         <template v-if="!locked">
             <el-row :gutter="20">
                 <el-col :span="13">
-                    &nbsp;
+                    <el-input
+                            placeholder="Enter any details here, character name, etc"
+                            size="medium"
+                            v-model="details">
+                    </el-input>
                 </el-col>
                 <el-col :span="11">
                     <Tooltip content='Use "FORTNITE1" for 10% discount!'>
@@ -143,6 +147,14 @@ export default {
     };
   },
   computed: {
+    details: {
+      get() {
+        return this.$store.getters['cart/orderDetails'];
+      },
+      set(details) {
+        return this.$store.dispatch('cart/changeOrderDetails', details);
+      },
+    },
     table_data() {
       return this.$store.getters['cart/itemsFormatted'];
     },

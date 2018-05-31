@@ -124,6 +124,7 @@ export default {
 
       return {
         game: 'fortnite',
+        product_id: 1,
         mode: this.mode,
         platform: this.platform,
         amount: this.amount,
