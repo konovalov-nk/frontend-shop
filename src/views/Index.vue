@@ -12,9 +12,7 @@ export default {
   },
   mounted() {
     const jwt = localStorage.getItem('APP_KEY_JWT');
-    if (typeof jwt === 'string' && jwt.length > 0) {
-      this.$store.dispatch('user/setJWTFetch', jwt);
-    }
+    this.$store.dispatch('user/setJWTFetch', jwt);
   },
 };
 </script>

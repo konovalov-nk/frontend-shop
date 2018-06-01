@@ -28,7 +28,7 @@ const handleErrors = async (response) => {
     if (errorMessage === 'Signature has expired') {
       errorMessage = 'Your session has timed out. Please log in again.';
       store.dispatch('user/setLoggedOut');
-      router.push('index');
+      router.push('/');
     }
 
     store.dispatch('modal/open', {
@@ -181,8 +181,16 @@ const storeUser = {
     },
 
     async setJWTFetch({ commit, dispatch }, jwt) {
-      commit('setJWT', jwt);
-      dispatch('fetchData');
+      if (typeof jwt === 'string' && jwt.length > 0) {
+        const base64Url = jwt.split('.')[1];
+        const base64 = base64Url.replace('-', '+').replace('_', '/');
+        const token = JSON.parse(atob(base64));
+        const currentTime = Date.now() / 1000;
+        if (currentTime < token.exp) {
+          commit('setJWT', jwt);
+          dispatch('fetchData');
+        }
+      }
     },
 
     async fetchData({
