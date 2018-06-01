@@ -360,6 +360,29 @@ const storeUser = {
           console.log(reason);
         });
     },
+
+
+    async testMail({ state, getters }) {
+      return fetch(`${protocol}://${hostname}/users/test?id=${getters.jwtData.sub}`, {
+        method: 'GET',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${state.currentJWT}`,
+        },
+      })
+        .then(handleErrors)
+        .then(async (response) => {
+          console.log('response is okay');
+          console.log(response);
+
+          return response;
+        })
+        .catch((reason) => {
+          console.log('reason');
+          console.log(reason);
+        });
+    },
   },
 };
 

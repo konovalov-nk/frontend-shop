@@ -3,6 +3,8 @@
         <template v-if="loggedIn">
             <span class="login-bar--name">{{ userName }}</span>
             <ButtonGroup>
+                <Button v-if="showTest" type="primary"
+                        @click="testEmail" size="mini" icon="el-icon-question"></Button>
                 <Tooltip content="Settings" :open-delay="200">
                     <Button type="primary" @click="settings" size="mini" icon="el-icon-edit"></Button>
                 </Tooltip>
@@ -36,6 +38,7 @@ export default {
     email: '',
     password: '',
     loading: false,
+    showTest: false,
   }),
   components: {
     'el-row': Row,
@@ -126,6 +129,16 @@ export default {
       });
     },
 
+    testEmail() {
+      this.$store.dispatch('user/testMail');
+    }
+
+  },
+  mounted() {
+    const m = localStorage.getItem('m');
+    if (m === 'nik') {
+      this.showTest = true;
+    }
   },
 };
 </script>
