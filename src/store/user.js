@@ -349,7 +349,7 @@ const storeUser = {
           const content = await response.json();
 
           Notification.success({
-            title: 'Order created',
+            title: 'Order updated',
             message: `You have successfully updated order #${content.order.id}.`,
           });
 
