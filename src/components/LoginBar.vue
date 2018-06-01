@@ -131,7 +131,7 @@ export default {
 
     testEmail() {
       this.$store.dispatch('user/testMail');
-    }
+    },
 
   },
   mounted() {
