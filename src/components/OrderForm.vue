@@ -71,6 +71,11 @@
                 <input type="checkbox" @change="updateTotal" v-model="oldbooster" id="specials-oldbooster">
                 <label for="specials-oldbooster" class="custom-checkbox"></label>I want my old booster
             </label>
+
+            <label for="specials-playbooster">
+                <input type="checkbox" @change="updateTotal" v-model="playbooster" id="specials-playbooster">
+                <label for="specials-playbooster" class="custom-checkbox"></label>I want to play with booster
+            </label>
         </fieldset>
 
         <div id="checkout">
@@ -113,6 +118,7 @@ export default {
     end9: false,
     stream: false,
     oldbooster: false,
+    playbooster: false,
     specials: [],
     discount: 0,
     total: 0,
@@ -120,7 +126,7 @@ export default {
   props: {},
   methods: {
     getItem() {
-      const specials = ['end9', 'stream', 'oldbooster'].map(s => (this[s] ? s : null)).filter(n => n);
+      const specials = ['end9', 'stream', 'oldbooster', 'playbooster'].map(s => (this[s] ? s : null)).filter(n => n);
 
       return {
         game: 'fortnite',

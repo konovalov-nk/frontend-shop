@@ -4,6 +4,7 @@ const BASE_MULTIPLIER = 1.0;
 const BASE_VALUE_PER_GAME = 10;
 const MULT_DUO_EXTRA = 0.4;
 const MULT_SQUAD_EXTRA = 0.8;
+const MULT_PLAY_BOOSTER = 0.4;
 const BONUS_9_KILLS = 5;
 const BONUS_STREAM = 2;
 const BONUS_OLD_BOOSTER = 0;
@@ -20,6 +21,10 @@ const getPrice = (item, discount) => {
     default:
       multiplier += MULT_SQUAD_EXTRA;
       break;
+  }
+
+  if (item.specials.includes('playbooster')) {
+    multiplier += MULT_PLAY_BOOSTER;
   }
 
   multiplier -= discount;
@@ -50,6 +55,7 @@ const getDescription = (item) => {
   if (item.specials.includes('end9')) descriptions.push('End game with 9 or more kills');
   if (item.specials.includes('stream')) descriptions.push('Stream my boost');
   if (item.specials.includes('oldbooster')) descriptions.push('I want my old booster');
+  if (item.specials.includes('playbooster')) descriptions.push('I want to play with booster');
   return descriptions.join(', ');
 };
 
@@ -80,7 +86,7 @@ const getSpecials = (item) => {
  * mode: 'solo', 'duo', 'squad'
  * platform: 'pc', 'ps4', 'xbox'
  * quantity: 10
- * specials: 'end9,stream,oldbooster'
+ * specials: 'end9,stream,oldbooster,playbooster'
  */
 const storeCart = {
   namespaced: true,

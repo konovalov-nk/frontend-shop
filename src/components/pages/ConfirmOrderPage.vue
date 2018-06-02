@@ -44,11 +44,17 @@ export default {
         });
 
         const dispatchType = type === 'Creating' ? 'create' : 'update';
-        this.$store.dispatch(`user/${dispatchType}Order`).then(() => {
+        this.$store.dispatch(`user/${dispatchType}Order`).then((response) => {
+          if (response.ok === true) {
+            this.$router.push('payment');
+          }
           this.loading.close();
-          this.$router.push('payment');
-        }).catch(() => {
+
+          return response;
+        }).catch((response) => {
           this.loading.close();
+
+          return response;
         });
       }
     },

@@ -137,6 +137,8 @@ const storeUser = {
         .catch((reason) => {
           console.log('reason');
           console.log(reason);
+
+          return reason;
         });
     },
 
@@ -177,6 +179,8 @@ const storeUser = {
         .catch((reason) => {
           console.log('reason');
           console.log(reason);
+
+          return reason;
         });
     },
 
@@ -220,6 +224,8 @@ const storeUser = {
         .catch((reason) => {
           console.log('reason');
           console.log(reason);
+
+          return reason;
         });
     },
 
@@ -253,6 +259,8 @@ const storeUser = {
         .catch((reason) => {
           console.log('reason');
           console.log(reason);
+
+          return reason;
         });
     },
 
@@ -289,6 +297,8 @@ const storeUser = {
         .catch((reason) => {
           console.log('reason');
           console.log(reason);
+
+          return reason;
         });
     },
 
@@ -327,6 +337,8 @@ const storeUser = {
         .catch((reason) => {
           console.log('reason');
           console.log(reason);
+
+          return reason;
         });
     },
     async updateOrder({ state }) {
@@ -362,6 +374,8 @@ const storeUser = {
         .catch((reason) => {
           console.log('reason');
           console.log(reason);
+
+          return reason;
         });
     },
 
@@ -396,6 +410,8 @@ const storeUser = {
         .catch((reason) => {
           console.log('reason');
           console.log(reason);
+
+          return reason;
         });
     },
 
@@ -418,6 +434,8 @@ const storeUser = {
         .catch((reason) => {
           console.log('reason');
           console.log(reason);
+
+          return reason;
         });
     },
   },
