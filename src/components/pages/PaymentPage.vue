@@ -14,8 +14,11 @@
                     currency="USD"
                     :client="paypal.credentials"
                     :button-style="paypal.style"
+                    @payment-authorized="paypalAuthorized"
+                    @payment-canceled="paypalCancelled"
                     @payment-completed="paypalComplete"
                     :items="paypal_items"
+                    :notify-url="ENV['WEBHOOK_URL_PAYPAL']"
                     env="sandbox">
             </PayPal>
         </template>
@@ -58,8 +61,22 @@ export default {
     },
   },
   methods: {
-    paypalComplete() {
+    paypalComplete(response) {
+      console.log('payment complete!');
+      console.log(response);
+    },
+    paypalAuthorized(response) {
+      console.log('payment authorized!');
+      console.log(response);
+      this.$store.dispatch('modal/open', {
+        message: `Your payment for the order ${this.$store.getters['cart/orderNumber']} was successful!`,
+        type: 'success',
+      });
       this.$router.push('finish');
+    },
+    paypalCancelled(response) {
+      console.log('payment canceled!');
+      console.log(response);
     },
   },
 };
