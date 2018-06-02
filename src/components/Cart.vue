@@ -1,6 +1,6 @@
 <template>
     <div :id="cart_type">
-        <h4>Cart{{ orderNumber }}</h4>
+        <h4>Cart{{ orderInvoice }}</h4>
         <Table
                 :data="table_data"
                 size="medium"
@@ -168,8 +168,8 @@ export default {
     cart_type() {
       return this.cartType === '' ? 'cart' : 'cart-simple';
     },
-    orderNumber() {
-      return this.$store.getters['cart/orderNumberFormatted'];
+    orderInvoice() {
+      return this.$store.getters['cart/orderInvoiceFormatted'];
     },
   },
   methods: {

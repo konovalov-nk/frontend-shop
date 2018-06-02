@@ -91,7 +91,8 @@ const storeCart = {
     total: 0,
     counter: 1,
     details: '',
-    order_id: 0,
+    invoice: '',
+    new: true,
   },
   mutations: {
     addItem(state, item) {
@@ -136,11 +137,14 @@ const storeCart = {
     changeDetails(state, details) {
       state.details = details;
     },
-    changeOrderId(state, orderId) {
-      state.order_id = orderId;
+    changeInvoice(state, invoice) {
+      state.invoice = invoice;
     },
     changeItems(state, items) {
       state.items = items;
+    },
+    changeNew(state, isNew) {
+      state.new = isNew;
     },
   },
   actions: {
@@ -177,8 +181,20 @@ const storeCart = {
     changeCoupon({ commit }, coupon) {
       commit('changeCoupon', coupon);
     },
-    setOrderId({ commit }, orderId) {
-      commit('changeOrderId', orderId);
+    reset({ commit }) {
+      commit('changeInvoice', '');
+      commit('changeCoupon', '');
+      commit('changeDiscount', 0);
+      commit('changeDetails', '');
+      commit('changeItems', []);
+      commit('changeNew', true);
+      commit('calculateTotal');
+    },
+    setInvoice({ commit }, invoice) {
+      commit('changeInvoice', invoice);
+    },
+    setNew({ commit }, isNew) {
+      commit('changeNew', isNew);
     },
     setItems({ commit }, items) {
       commit('changeItems', []);
@@ -198,8 +214,9 @@ const storeCart = {
     total: state => state.total.toFixed(2),
     items: state => state.items,
     orderDetails: state => state.details,
-    orderId: state => state.order_id,
-    orderNumberFormatted: state => (state.order_id > 0 ? ` (Order #${state.order_id})` : ''),
+    orderNew: state => state.new,
+    orderInvoice: state => state.invoice,
+    orderInvoiceFormatted: state => (state.new === false ? ` (Order #${state.invoice})` : ''),
     itemsFormatted(state) {
       return state.items.map(i => ({
         id: i.id,

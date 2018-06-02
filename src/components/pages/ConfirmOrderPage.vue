@@ -35,7 +35,7 @@ export default {
   methods: {
     payment() {
       if (this.$store.getters['cart/items'].length !== 0) {
-        const type = this.$store.getters['cart/orderId'] === 0 ? 'Creating' : 'Updating';
+        const type = this.$store.getters['cart/orderNew'] === true ? 'Creating' : 'Updating';
         this.loading = this.$loading({
           text: `${type} an order for you...`,
           spinner: 'el-icon-loading',

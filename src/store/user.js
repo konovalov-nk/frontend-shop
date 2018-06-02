@@ -238,11 +238,14 @@ const storeUser = {
           console.log(response);
 
           const content = await response.json();
-          store.dispatch('cart/setOrderId', content.order.id, { root: true });
-          if (content.order.id > 0) {
+          store.dispatch('cart/setInvoice', content.order.invoice, { root: true });
+          if (content.order.new === false) {
+            store.dispatch('cart/setNew', false, { root: true });
             store.dispatch('cart/setItems', content.items, { root: true });
             store.dispatch('cart/changeOrderDetails', content.order.details, { root: true });
             store.dispatch('cart/applyCoupon', content.order.coupon, { root: true });
+          } else {
+            store.dispatch('cart/setNew', true, { root: true });
           }
 
           return response;
@@ -270,7 +273,7 @@ const storeUser = {
           localStorage.setItem('APP_KEY_JWT', '');
           commit('setJWT', '');
           commit('setloggedIn', false);
-          store.dispatch('cart/setOrderId', 0, { root: true });
+          store.dispatch('cart/setNew', true, { root: true });
 
           if (!['index'].includes(router.currentRoute.name)) {
             router.push('/');
@@ -311,11 +314,12 @@ const storeUser = {
           console.log(response);
 
           const content = await response.json();
-          store.dispatch('cart/setOrderId', content.order.id, { root: true });
+          store.dispatch('cart/setInvoice', content.order.invoice, { root: true });
+          store.dispatch('cart/setNew', false, { root: true });
 
           Notification.success({
             title: 'Order created',
-            message: `You have successfully created the order #${content.order.id}.`,
+            message: `You have successfully created the order #${content.order.invoice}.`,
           });
 
           return response;
@@ -350,7 +354,7 @@ const storeUser = {
 
           Notification.success({
             title: 'Order updated',
-            message: `You have successfully updated order #${content.order.id}.`,
+            message: `You have successfully updated order #${content.order.invoice}.`,
           });
 
           return response;
@@ -361,6 +365,39 @@ const storeUser = {
         });
     },
 
+    async finishOrder({ state }) {
+      return fetch(`${protocol}://${hostname}/cart/complete`, {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${state.currentJWT}`,
+        },
+        body: JSON.stringify({
+          order: {
+            invoice: store.getters['cart/orderInvoice'],
+          },
+        }),
+      })
+        .then(handleErrors)
+        .then(async (response) => {
+          console.log('response is okay');
+          console.log(response);
+
+          const content = await response.json();
+
+          Notification.success({
+            title: 'Order paid',
+            message: `You have successfully sent payment for the order #${content.order.invoice}.`,
+          });
+
+          return response;
+        })
+        .catch((reason) => {
+          console.log('reason');
+          console.log(reason);
+        });
+    },
 
     async testMail({ state, getters }) {
       return fetch(`${protocol}://${hostname}/users/test?id=${getters.jwtData.sub}`, {
