@@ -51,11 +51,18 @@ const getDescription = (item) => {
   const descriptions = [];
   descriptions.push(`Mode: ${item.mode.toUpperCase()}`);
   descriptions.push(`Platform: ${item.platform.toUpperCase()}`);
+  descriptions.push(`Account: ${item.account_name}`);
 
-  if (item.specials.includes('end9')) descriptions.push('End game with 9 or more kills');
-  if (item.specials.includes('stream')) descriptions.push('Stream my boost');
-  if (item.specials.includes('oldbooster')) descriptions.push('I want my old booster');
-  if (item.specials.includes('playbooster')) descriptions.push('I want to play with booster');
+  const specials = [];
+
+  if (item.specials.includes('end9')) specials.push('End game with 9 or more kills');
+  if (item.specials.includes('stream')) specials.push('Stream my boost');
+  if (item.specials.includes('oldbooster')) specials.push('I want my old booster');
+  if (item.specials.includes('playbooster')) specials.push('I want to play with booster');
+  if (specials.length > 0) {
+    descriptions.push(`Specials: ${specials.join(', ')}`);
+  }
+
   return descriptions.join(', ');
 };
 
@@ -240,6 +247,8 @@ const storeCart = {
         quantity: i.quantity,
         price: getPrice(i, state.discount).toFixed(2),
         specials: getSpecials(i),
+        account_name: i.account_name,
+        password: i.password,
       }));
     },
     itemsFormattedPayPal(state) {

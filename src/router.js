@@ -6,11 +6,20 @@ import Checkout from './views/Checkout.vue';
 import ConfirmOrder from './views/ConfirmOrder.vue';
 import Payment from './views/Payment.vue';
 import Finish from './views/Finish.vue';
+import OrderHistory from './views/OrderHistory.vue';
 
 Vue.use(Router);
 
 const checkCart = (to, from, next) => {
   if (store.getters['cart/items'].length > 0) {
+    next();
+  } else {
+    next('/');
+  }
+};
+
+const checkLoggedIn = (to, from, next) => {
+  if (store.getters['user/loggedIn'] === true) {
     next();
   } else {
     next('/');
@@ -48,6 +57,12 @@ export default new Router({
       name: 'finish',
       component: Finish,
       beforeEnter: checkCart,
+    },
+    {
+      path: '/order_history',
+      name: 'order_history',
+      component: OrderHistory,
+      beforeEnter: checkLoggedIn,
     },
   ],
   scrollBehavior(to, from, savedPosition) {

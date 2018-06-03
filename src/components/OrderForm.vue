@@ -82,6 +82,29 @@
             <span id="total-amount">{{ currentTotal }}</span>
         </div>
 
+        <Form ref="account_details"
+              :model="account_details"
+              :label-position="form_label_position"
+              :rules="rules"
+              status-icon
+              labwidth="120px">
+            <hr/>
+
+            <el-row :gutter="20">
+                <el-col :span="12">
+                    <FormItem auto-complete="off" prop="account_name">
+                        <el-input v-model="account_details.account_name" placeholder="Account Name"/>
+                    </FormItem>
+                </el-col>
+
+                <el-col :span="12">
+                    <FormItem auto-complete="off" prop="password">
+                        <el-input type="password" v-model="account_details.password" placeholder="Password"/>
+                    </FormItem>
+                </el-col>
+            </el-row>
+        </Form>
+
         <div id="buttons-bar">
             <Button @click="addToCart" type="primary">Add to Cart</Button>
             <Button @click="checkout" :disabled="checkoutDisabled" type="primary">
@@ -103,13 +126,19 @@
 </template>
 
 <script>
-import { Button, Notification, Row } from 'element-ui';
+import { Button, Col, Input, Form, FormItem, Notification, Row } from 'element-ui';
 import { getPrice } from '@/store/cart';
 
 export default {
   name: 'OrderForm',
   components: {
-    Button, Row,
+    'el-col': Col,
+    'el-input': Input,
+    'el-row': Row,
+    Button,
+    Form,
+    FormItem,
+    Row,
   },
   data: () => ({
     mode: 'solo',
@@ -122,6 +151,23 @@ export default {
     specials: [],
     discount: 0,
     total: 0,
+    form_label_position: 'top',
+    account_details: {
+      account_name: '',
+      password: '',
+    },
+    rules: {
+      account_name: [
+        {
+          type: 'string', whitespace: true, required: true, message: 'Account Name is required', trigger: 'blur',
+        },
+      ],
+      password: [
+        {
+          type: 'string', whitespace: true, required: true, message: 'Password is required', trigger: 'blur',
+        },
+      ],
+    },
   }),
   props: {},
   methods: {
@@ -134,6 +180,8 @@ export default {
         mode: this.mode,
         platform: this.platform,
         quantity: this.quantity,
+        account_name: this.account_details.account_name,
+        password: this.account_details.password,
         specials,
       };
     },
@@ -143,11 +191,18 @@ export default {
     },
 
     addToCart() {
-      this.$store.dispatch('cart/add', this.getItem());
+      this.$refs.account_details.validate((valid) => {
+        if (!valid) {
+          return false;
+        }
 
-      Notification.success({
-        title: 'Add to Cart',
-        message: 'You have added an item to the cart',
+        this.$store.dispatch('cart/add', this.getItem());
+        Notification.success({
+          title: 'Add to Cart',
+          message: 'You have added an item to the cart',
+        });
+
+        return true;
       });
     },
 
@@ -179,6 +234,7 @@ export default {
     }
 
     #buttons-bar, #skype-bar {
+        margin-top: 20px;
         text-align: center;
     }
 </style>

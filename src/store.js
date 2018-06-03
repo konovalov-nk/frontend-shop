@@ -4,6 +4,7 @@ import Vuex from 'vuex';
 import { storeCart } from '@/store/cart';
 import { storeUser } from '@/store/user';
 import storeModal from '@/store/modal';
+import { storeOrder } from '@/store/order';
 
 Vue.use(Vuex);
 
@@ -12,5 +13,6 @@ export default new Vuex.Store({
     cart: storeCart,
     user: storeUser,
     modal: storeModal,
+    order: storeOrder,
   },
 });

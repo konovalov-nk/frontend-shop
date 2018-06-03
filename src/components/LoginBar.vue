@@ -88,10 +88,11 @@ export default {
       });
     },
     history() {
-      this.$store.dispatch('modal/open', {
-        message: 'Sorry, but we haven\'t implemented Order History yet',
-        type: 'info',
-      });
+      if (this.$router.currentRoute.name === 'order_history') {
+        this.$router.go(-1);
+      } else {
+        this.$router.push('/order_history');
+      }
     },
     logout() {
       this.$store.dispatch('user/logout');
