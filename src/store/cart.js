@@ -4,7 +4,6 @@ const BASE_MULTIPLIER = 1.0;
 const BASE_VALUE_PER_GAME = 10;
 const MULT_DUO_EXTRA = 0.4;
 const MULT_SQUAD_EXTRA = 0.8;
-const MULT_PLAY_BOOSTER = 0.4;
 const BONUS_9_KILLS = 5;
 const BONUS_STREAM = 2;
 const BONUS_OLD_BOOSTER = 0;
@@ -12,22 +11,18 @@ const BONUS_OLD_BOOSTER = 0;
 const getPrice = (item, discount) => {
   let multiplier = BASE_MULTIPLIER;
 
-  switch (item.mode) {
-    case 'solo':
-      break;
-    case 'duo':
-      multiplier += MULT_DUO_EXTRA;
-      break;
-    default:
-      multiplier += MULT_SQUAD_EXTRA;
-      break;
-  }
-
   if (item.specials.includes('playbooster')) {
-    multiplier += MULT_PLAY_BOOSTER;
+    switch (item.mode) {
+      case 'duo':
+        multiplier += MULT_DUO_EXTRA;
+        break;
+      case 'squad':
+        multiplier += MULT_SQUAD_EXTRA;
+        break;
+      default:
+        break;
+    }
   }
-
-  multiplier -= discount;
 
   let valuePerGame = BASE_VALUE_PER_GAME;
   valuePerGame += (item.specials.includes('end9') ? BONUS_9_KILLS : 0);
@@ -43,8 +38,7 @@ const getPrice = (item, discount) => {
     }
   }
 
-  total *= multiplier;
-  return total;
+  return total * multiplier * (1.0 - discount);
 };
 
 const getDescription = (item) => {
