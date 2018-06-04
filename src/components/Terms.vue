@@ -10,73 +10,86 @@
 
         <a id="modal-link" @click="toggleModal">Terms & Conditions of Use</a>
 
-        <div v-if="this.modal_visible" id="terms-modal" :class="{modal: true, visible: this.modal_visible}" @click="toggleModal">
-            <div class="modal-content">
-                Terms & Conditions of Use: <br>
-                1. General Property T& C: Fortniteboosted.com sells time in the form of the services we provide. We do not
+        <el-dialog
+                title="Terms & Conditions of Use"
+                :visible.sync="modal_visible"
+                width="80%">
+            <span>
+                <b>1. General Property T&C</b>: Fortniteboosted.com sells time in the form of the services we provide. We do not
                 claim to be owners, representatives or endorsers of any brands, copyrights, or intellectual properties
-                displayed on our website – they remain property of their respective owners.<br>
-                <br>
-                2. Purchase Delivery: All services purchased through our website will be completed in a timely fashion by
+                displayed on our website – they remain property of their respective owners.
+                <br><br>
+                <b>2. Purchase Delivery</b>: All services purchased through our website will be completed in a timely fashion by
                 highly qualified individuals. All products and services available for purchase on this website will be
                 delivered via electronic means or in-game services. We do not offer any physical goods or property of any
                 kind. Although we have many practices in place to ensure quick responses and turnaround times for services,
                 we cannot guarantee that no act of nature, catastrophic disaster, power failure, or related act of
                 uncertainty will delay any piece of the process of utilizing our services. We take every precaution possible
                 to prevent delays, and stand by our 100% Money Back Guarantee, in which we will refund 100% of your order
-                price via the payment method used, if you are not completely satisfied with our services.<br>
-                <br>
-                3. Payments: All payments may be made by the methods offered on our website. You shall be solely responsible
+                price via the payment method used, if you are not completely satisfied with our services.
+                <br><br>
+                <b>3. Payments</b>: All payments may be made by the methods offered on our website. You shall be solely responsible
                 to complete payment for services through our 3rd party payment processor, and subsequently agree to the
                 terms of use of their service, and any associated websites or services used during the payment process. We
                 reserve the right to cancel payment request at any time, for any reason. You are responsible for any taxes,
                 fees, or any other additional costs listed and associated with the purchase and delivery of your services
                 from us or our payment provider. You are responsible for the security of your web browser and computer at
                 all times, and release Forniteboosted.com from any possible damages incurred by unauthorized use of your
-                payment account/details by yourself or any other individual.<br>
-                <br>
-                4. Use of your Account: By purchasing our services, you agree to have your account accessed temporarily to
+                payment account/details by yourself or any other individual.
+                <br><br>
+                <b>4. Use of your Account</b>: By purchasing our services, you agree to have your account accessed temporarily to
                 complete the Fortnite boosting services . Your character will not be used for any other means than the
                 actions necessary to complete your order. We will not use your account to steal, harass, contact others, or
                 otherwise carry out any act of malicious intent during our use. You agree to allow our boosters change
-                account settings in order to optimize completion of your project.<br>
-                <br>
-                5. Money Back Guarantee: If you are dis-satisfied in any way with the services you were provided, we will
+                account settings in order to optimize completion of your project.
+                <br><br>
+                <b>5. Money Back Guarantee</b>: If you are dis-satisfied in any way with the services you were provided, we will
                 refund 100% of your purchase price, minus any additional fees, taxes or other costs associated with payment
                 and service processing. We do reserve the right to deny your claim for a refund, at our discretion, for
-                suspected abuse or otherwise malicious intent.<br>
-                6. Customer Duties & Responsibilities: You, as the customer, are solely responsible for maintaining the
+                suspected abuse or otherwise malicious intent.
+                <br><br>
+                <b>6. Customer Duties & Responsibilities</b>: You, as the customer, are solely responsible for maintaining the
                 security and confidentiality of your character account and details, as well as preventing unauthorized
                 access or use of your computer, electronic devices, means of electronic communications or otherwise delicate
                 information that could result in monetary loss, or loss of any other means. You agree to accept sole
                 responsibility for all activities that occur on your account and with your login details, and waive any
                 right to pursue legal or any other alternative means of action towards Fortniteboosted.com. If you are under
                 the age of 18, you agree to use our services and issue payment only with the explicit permission of your
-                legal guardian.<br>
-                <br>
+                legal guardian.
+                <br><br>
                 You agree to cooperate with any possible investigation or questioning regarding misuse, abuse, fraud,
                 false-claims or otherwise malicious activity involving our website or associated services. Buy purchasing
                 our services, you agree that you fully understand what services you are paying for, and you agree to provide
                 accurate information regarding your demographics, payment details, account details, and any other
-                information requested of you. <br>
-                <br>
+                information requested of you.
+                <br><br>
                 You explicitly agree to indemnify and hold Forniteboosted.com and its partners & employees harmless from any
                 demands, claims, monetary or physical loss incurred by using our website and associated services. You agree
                 to accept explicit responsibility to personally ensuring that use of our website or services is not illegal,
-                a crime, or considered otherwise criminal in your city, state, country, territory or other jurisdiction.<br>
-                <br>
-                7. Changes & Updates: We reserve the right to change or update our terms and conditions at any time, without
+                a crime, or considered otherwise criminal in your city, state, country, territory or other jurisdiction.
+                <br><br>
+                <b>7. Changes & Updates</b>: We reserve the right to change or update our terms and conditions at any time, without
                 any prior written, electronic, verbal, or other form of notice. You agree that any terms or conditions not
                 explicitly explained by this document are to be applied, interpreted, and otherwise generated at the sole
-                discretion of the owner of Fortniteboosted.com.<br>
-            </div>
-        </div>
+                discretion of the owner of Fortniteboosted.com.
+            </span>
+            <span slot="footer" class="dialog-footer">
+                <el-button type="primary" @click="toggleModal">Close</el-button>
+            </span>
+        </el-dialog>
+
     </div>
 </template>
 
 <script>
+import { Dialog, Button } from 'element-ui';
+
 export default {
   name: 'Terms',
+  components: {
+    'el-button': Button,
+    'el-dialog': Dialog,
+  },
   data() {
     return {
       modal_visible: false,

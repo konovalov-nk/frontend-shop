@@ -1,6 +1,6 @@
 <template>
     <div id="faq-none">
-        <h2>FAQ:</h2>
+        <h2>FAQ</h2>
         <div id="faq-answers">
             <el-collapse v-model="active_name">
                 <el-collapse-item title="How long will it take you to finish my boost?" name="1">

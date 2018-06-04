@@ -82,7 +82,7 @@ a {
     background-color: #ababab;
 }
 
-#faq, #order-form, #cart, #content-grid-simple {
+#faq, #cart, #content-grid-simple {
     background-color: #f6f6f6;
     box-shadow: 0 0 10pt lightgray;
     padding: 20px 40px;
@@ -150,7 +150,7 @@ main {
     display: inline-block;
 }
 
-@media only screen and (min-width: 1000px) {
+@media only screen and (min-width: 992px) {
     #content-grid {
         max-width: none;
         grid-template-columns: auto 380px;
@@ -204,58 +204,6 @@ main {
     background-size: contain;
 }
 
-.ui-accordion-header { /* Bad practise, I know, but oh well */
-    background-color: #e3e3e3 !important;
-    border-radius: 0 !important;
-    border: none !important;
-    color: #7b7b7b !important;
-    font-size: 1.1em !important;
-    font-weight: 600 !important;
-    margin-top: 10px !important;
-}
-
-.ui-accordion-header-icon {
-    float: right;
-    top: 5px;
-}
-
-.ui-accordion-header-active .ui-accordion-header-icon {
-    background-image: url(https://code.jquery.com/ui/1.12.1/themes/base/images/ui-icons_444444_256x240.png) !important;
-}
-
-.ui-accordion-header-collapsed .ui-accordion-header-icon {
-
-}
-
-#coupon-field {
-    width: 220pt;
-}
-
-#coupon-field input {
-    /*height: ;*/
-    width: 100%;
-    padding: 0.4em;
-    text-align: center;
-    font-weight: 600;
-    border: 1px solid #d7d7d7;
-    border-radius: 10px;
-    box-shadow: 0 0 5px lightgray;
-    text-transform: uppercase;
-}
-
-#coupon-field input::placeholder {
-    opacity: 0.6;
-    font-size: 0.8em;
-}
-
-#coupon-field p {
-    text-transform: uppercase;
-    text-align: center;
-    font-size: 0.8em;
-    font-weight: 600;
-    color: darkorange;
-}
-
 #specials-field label {
     display: block;
     font-size: 0.9em;
@@ -292,10 +240,6 @@ main {
     background-size: contain;
 }
 
-#checkout {
-
-}
-
 #total-amount {
     font-size: 2.5em;
     font-weight: 500;
@@ -320,29 +264,6 @@ main {
     margin-left: 20px;
 }
 
-/* The Modal (background) */
-.modal {
-    display: none; /* Hidden by default */
-    position: fixed; /* Stay in place */
-    z-index: 3; /* Sit on top */
-    left: 0;
-    top: 0;
-    width: 100%; /* Full width */
-    height: 100%; /* Full height */
-    overflow: auto; /* Enable scroll if needed */
-    background-color: rgb(0, 0, 0); /* Fallback color */
-    background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
-}
-
-/* Modal Content/Box */
-.modal-content {
-    background-color: #fefefe;
-    margin: 15% auto; /* 15% from the top and centered */
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%; /* Could be more or less, depending on screen size */
-    border-radius: 15px;
-}
 
 #buttons-bar {
     border-top: 1px solid #d8dbe2;

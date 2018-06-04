@@ -1,6 +1,7 @@
 <template>
     <div id="order-form">
-        <fieldset id="mode-field">
+        <h2>Select your package</h2>
+        <fieldset id="mode-field" class="order-form-checkbox-fieldset">
             <legend>Competitive Mode</legend>
             <div class="form-radio">
                 <label for="mode-solo">
@@ -24,7 +25,7 @@
             </div>
         </fieldset>
 
-        <fieldset id="platform-field">
+        <fieldset id="platform-field" class="order-form-checkbox-fieldset">
             <legend>Platform</legend>
             <div class="form-radio">
                 <label for="platform-pc">
