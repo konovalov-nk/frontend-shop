@@ -27,11 +27,11 @@
 </template>
 
 <script>
-import ContentGridSimple from '@/components/layouts/ContentGridSimple.vue';
-import AccountDetails from '@/components/AccountDetails.vue';
-import Cart from '@/components/Cart.vue';
-import { Button } from 'element-ui';
-import PayPal from 'vue-paypal-checkout';
+import ContentGridSimple from '@/components/layouts/ContentGridSimple.vue'
+import AccountDetails from '@/components/AccountDetails.vue'
+import Cart from '@/components/Cart.vue'
+import { Button } from 'element-ui'
+import PayPal from 'vue-paypal-checkout'
 
 export default {
   name: 'PaymentPage',
@@ -53,48 +53,48 @@ export default {
           color: 'blue',
         },
       },
-    };
+    }
   },
   computed: {
     totalAmount() {
-      return this.$store.getters['cart/total'];
+      return this.$store.getters['cart/total']
     },
     paypalItems() {
-      return this.$store.getters['cart/itemsFormattedPayPal'];
+      return this.$store.getters['cart/itemsFormattedPayPal']
     },
     notifyUrl() {
-      return process.env.VUE_APP_WEBHOOK_URL_PAYPAL;
+      return process.env.VUE_APP_WEBHOOK_URL_PAYPAL
     },
     orderInvoice() {
-      return this.$store.getters['cart/orderInvoice'];
+      return this.$store.getters['cart/orderInvoice']
     },
   },
   methods: {
     paypalComplete(response) {
-      console.log('payment complete!');
-      console.log(response);
+      console.log('payment complete!')
+      console.log(response)
       this.$store.dispatch('modal/open', {
         message: `Your payment for the order #${this.$store.getters['cart/orderInvoice']} was successful!`,
         type: 'success',
         confirm: {
           callback: () => {
-            this.$router.push('finish');
-            this.$store.dispatch('cart/reset');
+            this.$router.push('finish')
+            this.$store.dispatch('cart/reset')
           },
         },
-      });
+      })
     },
     paypalAuthorized(response) {
-      console.log('payment authorized!');
-      console.log(response);
-      this.$store.dispatch('user/finishOrder');
+      console.log('payment authorized!')
+      console.log(response)
+      this.$store.dispatch('user/finishOrder')
     },
     paypalCancelled(response) {
-      console.log('payment canceled!');
-      console.log(response);
+      console.log('payment canceled!')
+      console.log(response)
     },
   },
-};
+}
 </script>
 
 <style lang="less">

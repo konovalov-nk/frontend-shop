@@ -79,7 +79,7 @@
 </template>
 
 <script>
-import Terms from '@/components/Terms.vue';
+import Terms from '@/components/Terms.vue'
 
 export default {
   name: 'Faq',
@@ -90,7 +90,7 @@ export default {
   components: {
     Terms,
   },
-};
+}
 </script>
 
 <style scoped lang="less">

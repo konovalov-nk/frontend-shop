@@ -14,7 +14,6 @@
     {{ description(item) }}
     Wins: {{ item.quantity }}
     Price: ${{ (+item.price).toFixed(2) }}
-    Account Name: {{ item.account_name }}
                         </pre>
                     </template>
                 </template>
@@ -60,12 +59,12 @@
 </template>
 
 <script>
-import { Button, Col, Input, Table, TableColumn, Tag, Tooltip, Row } from 'element-ui';
-import lang from 'element-ui/lib/locale/lang/en';
-import locale from 'element-ui/lib/locale';
-import { getDescription } from '@/store/cart';
+import { Button, Col, Input, Table, TableColumn, Tag, Tooltip, Row } from 'element-ui'
+import lang from 'element-ui/lib/locale/lang/en'
+import locale from 'element-ui/lib/locale'
+import { getDescription } from '@/store/cart'
 
-locale.use(lang);
+locale.use(lang)
 
 export default {
   name: 'OrderHistory',
@@ -85,21 +84,21 @@ export default {
   }),
   computed: {
     table_data() {
-      return this.$store.getters['order/items'];
+      return this.$store.getters['order/items']
     },
   },
   mounted() {
-    this.loadOrders();
+    this.loadOrders()
   },
   methods: {
     description(item) {
-      return getDescription(item);
+      return getDescription(item)
     },
     time(time) {
-      return time.split('T').join(' ').split('.')[0];
+      return time.split('T').join(' ').split('.')[0]
     },
     total(orderItems) {
-      return orderItems.reduce((r, item) => r + (+item.price), 0);
+      return orderItems.reduce((r, item) => r + (+item.price), 0)
     },
     loadOrders() {
       this.loading = this.$loading({
@@ -107,22 +106,22 @@ export default {
         text: 'Trying to fetch orders...',
         spinner: 'el-icon-loading',
         background: 'rgba(0, 0, 0, 0.6)',
-      });
+      })
 
       this.$store.dispatch('order/fetchOrders').then(() => {
-        this.loading.close();
-        this.loading = false;
-      });
+        this.loading.close()
+        this.loading = false
+      })
     },
     getStatusTag(status) {
       const statuses = {
         paid: 'success',
         unpaid: 'warning',
         processing: 'info',
-      };
+      }
 
-      return statuses[status];
+      return statuses[status]
     },
   },
-};
+}
 </script>

@@ -82,7 +82,7 @@
 </template>
 
 <script>
-import { Dialog, Button } from 'element-ui';
+import { Dialog, Button } from 'element-ui'
 
 export default {
   name: 'Terms',
@@ -93,14 +93,14 @@ export default {
   data() {
     return {
       modal_visible: false,
-    };
+    }
   },
   methods: {
     toggleModal() {
-      this.modal_visible = !this.modal_visible;
+      this.modal_visible = !this.modal_visible
     },
   },
-};
+}
 </script>
 
 <style scoped lang="less">

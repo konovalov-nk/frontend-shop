@@ -104,12 +104,12 @@
 </template>
 
 <script>
-import { Button, Form, FormItem, Col, Input, Table, TableColumn, Row, Select, Option } from 'element-ui';
-import lang from 'element-ui/lib/locale/lang/en';
-import locale from 'element-ui/lib/locale';
-import countryData from 'country-data';
+import { Button, Form, FormItem, Col, Input, Table, TableColumn, Row, Select, Option } from 'element-ui'
+import lang from 'element-ui/lib/locale/lang/en'
+import locale from 'element-ui/lib/locale'
+import countryData from 'country-data'
 
-locale.use(lang);
+locale.use(lang)
 
 export default {
   name: 'AccountDetails',
@@ -131,26 +131,26 @@ export default {
   },
   data() {
     const validatePassword = (rule, value, callback) => {
-      console.log('validatePassword');
+      console.log('validatePassword')
       if (value === '') {
-        callback(new Error('Please input the password'));
+        callback(new Error('Please input the password'))
       } else {
-        callback();
+        callback()
       }
-    };
+    }
 
     const validatePasswordConfirmation = (rule, value, callback) => {
-      console.log('validateConfirm');
+      console.log('validateConfirm')
       if (value === '') {
-        callback(new Error('Please input the password again'));
+        callback(new Error('Please input the password again'))
       } else if (value !== this.form.password) {
-        callback(new Error("Two inputs don't match!"));
+        callback(new Error("Two inputs don't match!"))
       } else {
-        callback();
+        callback()
       }
-    };
+    }
 
-    const isLocked = this.locked;
+    const isLocked = this.locked
 
     return {
       loading: null,
@@ -222,95 +222,95 @@ export default {
         ],
       },
       countries: [],
-    };
+    }
   },
   computed: {
     userData() {
-      return this.$store.getters['user/data'];
+      return this.$store.getters['user/data']
     },
     loggedIn() {
-      return this.$store.getters['user/loggedIn'];
+      return this.$store.getters['user/loggedIn']
     },
   },
   methods: {
     pageType(type) {
-      return this.page_type === type;
+      return this.page_type === type
     },
     toggleDetails() {
-      this.page_type = this.page_type === 'register' ? 'login' : 'register';
+      this.page_type = this.page_type === 'register' ? 'login' : 'register'
     },
     submitForm(formName) {
-      const method = formName === 'form' ? 'register' : 'login';
+      const method = formName === 'form' ? 'register' : 'login'
       this.$refs[formName].validate((valid) => {
         if (!valid) {
-          return false;
+          return false
         }
 
-        this[method]();
+        this[method]()
 
-        return true;
-      });
+        return true
+      })
     },
     register() {
-      this.showLoading('form');
+      this.showLoading('form')
       this.$store.dispatch('user/register', this.form).then(() => {
-        this.closeLoading('form');
+        this.closeLoading('form')
       }).catch((e) => {
-        console.log('error');
-        console.log(e);
-      });
+        console.log('error')
+        console.log(e)
+      })
     },
     login() {
-      this.showLoading('formLogin');
+      this.showLoading('formLogin')
       const user = {
         email: this.formLogin.email,
         password: this.formLogin.password,
         password_confirmation: this.formLogin.password,
-      };
+      }
 
       this.$store.dispatch('user/login', user).then((v) => {
-        console.log(v);
-        this.closeLoading('formLogin');
+        console.log(v)
+        this.closeLoading('formLogin')
       }).catch((e) => {
-        console.log('error');
-        console.log(e);
-      });
+        console.log('error')
+        console.log(e)
+      })
     },
     resetForm(formName) {
-      this.$refs[formName].resetFields();
+      this.$refs[formName].resetFields()
     },
     showLoading(formName) {
-      const loading = formName === 'form' ? 'loading' : 'loadingLogin';
-      const signType = formName === 'form' ? 'up' : 'in';
+      const loading = formName === 'form' ? 'loading' : 'loadingLogin'
+      const signType = formName === 'form' ? 'up' : 'in'
 
       this[loading] = this.$loading({
         target: this.$refs[formName].$el,
         text: `Trying to sign-${signType}...`,
         spinner: 'el-icon-loading',
         background: 'rgba(0, 0, 0, 0.6)',
-      });
+      })
     },
     closeLoading(formName) {
-      const loading = formName === 'form' ? 'loading' : 'loadingLogin';
-      this[loading].close();
+      const loading = formName === 'form' ? 'loading' : 'loadingLogin'
+      this[loading].close()
     },
 
   },
   mounted() {
-    const countriesUnique = Object.values(countryData.countries.all.reduce((acc, cur) => Object.assign(acc, { [cur.ioc]: cur }), {}));
+    const countriesUnique = Object.values(countryData.countries.all.reduce((acc, cur) => Object.assign(acc, { [cur.ioc]: cur }), {}))
     this.countries = countriesUnique
       .map((c, i) => ({
         id: i,
         name: c.name,
         ioc: c.ioc,
       }))
-      .sort((a, b) => a.name.localeCompare(b.name));
+      .sort((a, b) => a.name.localeCompare(b.name))
 
     if (this.userData) {
-      this.form = this.userData;
+      this.form = this.userData
     }
   },
-};
+}
 </script>
 
 <style lang="less">

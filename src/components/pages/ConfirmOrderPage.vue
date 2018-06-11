@@ -16,11 +16,11 @@
 </template>
 
 <script>
-import ContentGridSimple from '@/components/layouts/ContentGridSimple.vue';
-import AccountDetails from '@/components/AccountDetails.vue';
-import Cart from '@/components/Cart.vue';
-import { Button } from 'element-ui';
-import PayPal from 'vue-paypal-checkout';
+import ContentGridSimple from '@/components/layouts/ContentGridSimple.vue'
+import AccountDetails from '@/components/AccountDetails.vue'
+import Cart from '@/components/Cart.vue'
+import { Button } from 'element-ui'
+import PayPal from 'vue-paypal-checkout'
 
 export default {
   name: 'ConfirmOrderPage',
@@ -30,41 +30,41 @@ export default {
   data() {
     return {
       loading: false,
-    };
+    }
   },
   methods: {
     payment() {
       if (this.$store.getters['cart/items'].length !== 0) {
-        const type = this.$store.getters['cart/orderNew'] === true ? 'Creating' : 'Updating';
+        const type = this.$store.getters['cart/orderNew'] === true ? 'Creating' : 'Updating'
         this.loading = this.$loading({
           text: `${type} an order for you...`,
           spinner: 'el-icon-loading',
           fullscreen: true,
           background: 'rgba(0, 0, 0, 0.6)',
-        });
+        })
 
-        const dispatchType = type === 'Creating' ? 'create' : 'update';
+        const dispatchType = type === 'Creating' ? 'create' : 'update'
         this.$store.dispatch(`user/${dispatchType}Order`).then((response) => {
           if (response.ok === true) {
-            this.$router.push('payment');
+            this.$router.push('payment')
           }
-          this.loading.close();
+          this.loading.close()
 
-          return response;
+          return response
         }).catch((response) => {
-          this.loading.close();
+          this.loading.close()
 
-          return response;
-        });
+          return response
+        })
       }
     },
     paymentDisabled() {
-      if (this.$store.getters['cart/items'].length === 0) return false;
+      if (this.$store.getters['cart/items'].length === 0) return false
 
-      return !this.$store.getters['user/loggedIn'];
+      return !this.$store.getters['user/loggedIn']
     },
   },
-};
+}
 </script>
 
 <style lang="less">

@@ -11,9 +11,9 @@
 </template>
 
 <script>
-import ContentGridSimple from '@/components/layouts/ContentGridSimple.vue';
-import OrderHistory from '@/components/OrderHistory.vue';
-import { Button, Row, Col } from 'element-ui';
+import ContentGridSimple from '@/components/layouts/ContentGridSimple.vue'
+import OrderHistory from '@/components/OrderHistory.vue'
+import { Button, Row, Col } from 'element-ui'
 
 export default {
   name: 'OrderHistoryPage',
@@ -24,5 +24,5 @@ export default {
     ContentGridSimple,
     OrderHistory,
   },
-};
+}
 </script>

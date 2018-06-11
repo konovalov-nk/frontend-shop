@@ -1,5 +1,5 @@
 /* eslint-disable no-param-reassign,no-unused-vars */
-import { Message, MessageBox } from 'element-ui';
+import { Message, MessageBox } from 'element-ui'
 
 const Modals = {
   msgbox: MessageBox,
@@ -7,7 +7,7 @@ const Modals = {
   confirm: MessageBox.confirm,
   prompt: MessageBox.prompt,
   message: Message,
-};
+}
 
 const storeModal = {
   namespaced: true,
@@ -21,25 +21,25 @@ const storeModal = {
         type: options.type || 'warning',
       }).then(() => {
         if (options.confirm) {
-          const { confirm } = options;
-          const { callback = () => {}, message, type = 'success' } = confirm;
-          callback();
+          const { confirm } = options
+          const { callback = () => {}, message, type = 'success' } = confirm
+          callback()
           if (message) {
-            Modals.message({ type, message });
+            Modals.message({ type, message })
           }
         }
       }).catch(() => {
         if (options.cancel) {
-          const { cancel } = options;
-          const { callback = () => {}, message, type = 'info' } = cancel;
-          callback();
+          const { cancel } = options
+          const { callback = () => {}, message, type = 'info' } = cancel
+          callback()
           if (message) {
-            Modals.message({ type, message });
+            Modals.message({ type, message })
           }
         }
-      });
+      })
     },
   },
-};
+}
 
-export default storeModal;
+export default storeModal

@@ -25,8 +25,8 @@
 </template>
 
 <script>
-import { Button, ButtonGroup, Steps, Step } from 'element-ui';
-import LoginBar from '@/components/LoginBar.vue';
+import { Button, ButtonGroup, Steps, Step } from 'element-ui'
+import LoginBar from '@/components/LoginBar.vue'
 
 export default {
   name: 'ContentGrid',
@@ -36,5 +36,5 @@ export default {
   components: {
     Button, ButtonGroup, LoginBar, Steps, Step,
   },
-};
+}
 </script>

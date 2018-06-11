@@ -83,29 +83,6 @@
             <span id="total-amount">{{ currentTotal }}</span>
         </div>
 
-        <Form ref="account_details"
-              :model="account_details"
-              :label-position="form_label_position"
-              :rules="rules"
-              status-icon
-              labwidth="120px">
-            <hr/>
-
-            <el-row :gutter="20">
-                <el-col :span="12">
-                    <FormItem auto-complete="off" prop="account_name">
-                        <el-input v-model="account_details.account_name" placeholder="Account Name"/>
-                    </FormItem>
-                </el-col>
-
-                <el-col :span="12">
-                    <FormItem auto-complete="off" prop="password">
-                        <el-input type="password" v-model="account_details.password" placeholder="Password"/>
-                    </FormItem>
-                </el-col>
-            </el-row>
-        </Form>
-
         <div id="buttons-bar">
             <Button @click="addToCart" type="primary">Add to Cart</Button>
             <Button @click="checkout" :disabled="checkoutDisabled" type="primary">
@@ -127,8 +104,8 @@
 </template>
 
 <script>
-import { Button, Col, Input, Form, FormItem, Notification, Row } from 'element-ui';
-import { getPrice } from '@/store/cart';
+import { Button, Col, Input, Form, FormItem, Notification, Row } from 'element-ui'
+import { getPrice } from '@/store/cart'
 
 export default {
   name: 'OrderForm',
@@ -152,28 +129,13 @@ export default {
     specials: [],
     discount: 0,
     total: 0,
-    form_label_position: 'top',
-    account_details: {
-      account_name: '',
-      password: '',
-    },
-    rules: {
-      account_name: [
-        {
-          type: 'string', whitespace: true, required: true, message: 'Account Name is required', trigger: 'blur',
-        },
-      ],
-      password: [
-        {
-          type: 'string', whitespace: true, required: true, message: 'Password is required', trigger: 'blur',
-        },
-      ],
-    },
   }),
   props: {},
   methods: {
     getItem() {
-      const specials = ['end9', 'stream', 'oldbooster', 'playbooster'].map(s => (this[s] ? s : null)).filter(n => n);
+      const specials = ['end9', 'stream', 'oldbooster', 'playbooster']
+        .map(s => (this[s] ? s : null))
+        .filter(n => n)
 
       return {
         game: 'fortnite',
@@ -181,50 +143,40 @@ export default {
         mode: this.mode,
         platform: this.platform,
         quantity: this.quantity,
-        account_name: this.account_details.account_name,
-        password: this.account_details.password,
         specials,
-      };
+      }
     },
 
     updateTotal() {
-      this.total = getPrice(this.getItem(), this.discount);
+      this.total = getPrice(this.getItem(), this.discount)
     },
 
     addToCart() {
-      this.$refs.account_details.validate((valid) => {
-        if (!valid) {
-          return false;
-        }
-
-        this.$store.dispatch('cart/add', this.getItem());
-        Notification.success({
-          title: 'Add to Cart',
-          message: 'You have added an item to the cart',
-        });
-
-        return true;
-      });
+      this.$store.dispatch('cart/add', this.getItem())
+      Notification.success({
+        title: 'Add to Cart',
+        message: 'You have added an item to the cart',
+      })
     },
 
     checkout() {
-      this.$router.push('checkout');
+      this.$router.push('checkout')
     },
   },
   computed: {
     currentTotal() {
-      return `$${this.total.toFixed(2)}`;
+      return `$${this.total.toFixed(2)}`
     },
     checkoutDisabled() {
-      return this.$store.getters['cart/items'].length === 0;
+      return this.$store.getters['cart/items'].length === 0
     },
   },
   mounted() {
-    this.updateTotal();
+    this.updateTotal()
   },
 
 
-};
+}
 </script>
 
 <style scoped lang="less">

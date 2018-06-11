@@ -2,11 +2,11 @@
     <ContentGridSimple :active="1">
         <template slot="content">
             <el-row :gutter="20">
-                <el-col :span="16">
+                <el-col :xs="24" :sm="24" :md="12" :lg="16" :xl="16">
                     <AccountDetails />
                     <Cart cartType="simple"/>
                 </el-col>
-                <el-col :span="8">
+                <el-col :xs="24" :sm="24" :md="12" :lg="8" :xl="8">
                     <Payment />
                 </el-col>
             </el-row>
@@ -23,11 +23,11 @@
 </template>
 
 <script>
-import ContentGridSimple from '@/components/layouts/ContentGridSimple.vue';
-import AccountDetails from '@/components/AccountDetails.vue';
-import Cart from '@/components/Cart.vue';
-import Payment from '@/components/Payment.vue';
-import { Button, Col, Row } from 'element-ui';
+import ContentGridSimple from '@/components/layouts/ContentGridSimple.vue'
+import AccountDetails from '@/components/AccountDetails.vue'
+import Cart from '@/components/Cart.vue'
+import Payment from '@/components/Payment.vue'
+import { Button, Col, Row } from 'element-ui'
 
 export default {
   name: 'CheckoutPage',
@@ -42,17 +42,17 @@ export default {
   },
   methods: {
     confirmOrder() {
-      if (this.$store.getters['cart/items'].length !== 0) {
-        this.$router.push('confirm');
+      if (this.$store.getters['cart/order_valid']) {
+        this.$router.push('confirm')
       }
     },
   },
   computed: {
     confirmDisabled() {
-      if (this.$store.getters['cart/items'].length === 0) return false;
+      if (!this.$store.getters['cart/order_valid']) return true
 
-      return !this.$store.getters['user/loggedIn'];
+      return !this.$store.getters['user/loggedIn']
     },
   },
-};
+}
 </script>

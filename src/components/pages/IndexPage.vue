@@ -14,11 +14,11 @@
 </template>
 
 <script>
-import ContentGridSimple from '@/components/layouts/ContentGridSimple.vue';
-import Faq from '@/components/Faq.vue';
-import OrderForm from '@/components/OrderForm.vue';
-import Cart from '@/components/Cart.vue';
-import { Button, Row, Col } from 'element-ui';
+import ContentGridSimple from '@/components/layouts/ContentGridSimple.vue'
+import Faq from '@/components/Faq.vue'
+import OrderForm from '@/components/OrderForm.vue'
+import Cart from '@/components/Cart.vue'
+import { Button, Row, Col } from 'element-ui'
 
 export default {
   name: 'IndexPage',
@@ -31,7 +31,7 @@ export default {
     Faq,
     OrderForm,
   },
-};
+}
 </script>
 
 <style lang="less">

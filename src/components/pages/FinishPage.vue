@@ -12,8 +12,8 @@
 </template>
 
 <script>
-import ContentGridSimple from '@/components/layouts/ContentGridSimple.vue';
-import { Button } from 'element-ui';
+import ContentGridSimple from '@/components/layouts/ContentGridSimple.vue'
+import { Button } from 'element-ui'
 
 export default {
   name: 'ConfirmOrderPage',
@@ -22,7 +22,7 @@ export default {
   },
   data() {
     return {
-    };
+    }
   },
-};
+}
 </script>

@@ -1,12 +1,12 @@
 /* eslint-disable no-param-reassign */
-import Vue from 'vue';
-import Vuex from 'vuex';
-import { storeCart } from '@/store/cart';
-import { storeUser } from '@/store/user';
-import storeModal from '@/store/modal';
-import { storeOrder } from '@/store/order';
+import Vue from 'vue'
+import Vuex from 'vuex'
+import { storeCart } from '@/store/cart'
+import { storeUser } from '@/store/user'
+import storeModal from '@/store/modal'
+import { storeOrder } from '@/store/order'
 
-Vue.use(Vuex);
+Vue.use(Vuex)
 
 export default new Vuex.Store({
   modules: {
@@ -15,4 +15,4 @@ export default new Vuex.Store({
     modal: storeModal,
     order: storeOrder,
   },
-});
+})

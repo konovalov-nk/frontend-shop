@@ -57,7 +57,7 @@
                             <Button
                                 size="mini"
                                 class="micro"
-                                type="danger" plain icon="el-icon-remove"
+                                type="danger" plain icon="el-icon-delete"
                                 @click="handleDelete(scope.$index, scope.row)">
                             </Button>
                         </Row>
@@ -99,11 +99,11 @@
 </template>
 
 <script>
-import { Button, Col, Input, Table, TableColumn, Tooltip, Row } from 'element-ui';
-import lang from 'element-ui/lib/locale/lang/en';
-import locale from 'element-ui/lib/locale';
+import { Button, Col, Input, Table, TableColumn, Tooltip, Row } from 'element-ui'
+import lang from 'element-ui/lib/locale/lang/en'
+import locale from 'element-ui/lib/locale'
 
-locale.use(lang);
+locale.use(lang)
 
 export default {
   name: 'Cart',
@@ -143,33 +143,33 @@ export default {
         total: '$115.82',
       },
       ],
-    };
+    }
   },
   computed: {
     coupon: {
       get() {
-        return this.$store.getters['cart/coupon'];
+        return this.$store.getters['cart/coupon']
       },
       set(coupon) {
-        return this.$store.dispatch('cart/changeCoupon', coupon);
+        return this.$store.dispatch('cart/changeCoupon', coupon)
       },
     },
     details: {
       get() {
-        return this.$store.getters['cart/orderDetails'];
+        return this.$store.getters['cart/orderDetails']
       },
       set(details) {
-        return this.$store.dispatch('cart/changeOrderDetails', details);
+        return this.$store.dispatch('cart/changeOrderDetails', details)
       },
     },
     table_data() {
-      return this.$store.getters['cart/itemsFormatted'];
+      return this.$store.getters['cart/itemsFormatted']
     },
     cart_type() {
-      return this.cartType === '' ? 'cart' : 'cart-simple';
+      return this.cartType === '' ? 'cart' : 'cart-simple'
     },
     orderInvoice() {
-      return this.$store.getters['cart/orderInvoiceFormatted'];
+      return this.$store.getters['cart/orderInvoiceFormatted']
     },
   },
   methods: {
@@ -178,25 +178,25 @@ export default {
         this.$store.getters['cart/currentCoupon'],
         'Total Cost:',
         this.$store.getters['cart/totalFormatted'],
-      ];
+      ]
     },
     formatDescription(description) {
-      return description.split(',').map(d => d.trim()).join('<br />');
+      return description.split(',').map(d => d.trim()).join('<br />')
     },
     handleAdd(index, row) {
-      this.$store.dispatch('cart/increase', row.id);
+      this.$store.dispatch('cart/increase', row.id)
     },
     handleRemove(index, row) {
-      this.$store.dispatch('cart/decrease', row.id);
+      this.$store.dispatch('cart/decrease', row.id)
     },
     handleDelete(index, row) {
-      this.$store.dispatch('cart/remove', row.id);
+      this.$store.dispatch('cart/remove', row.id)
     },
     applyCoupon() {
-      this.$store.dispatch('cart/applyCoupon', this.coupon);
+      this.$store.dispatch('cart/applyCoupon', this.coupon)
     },
   },
-};
+}
 </script>
 
 <style lang="less">

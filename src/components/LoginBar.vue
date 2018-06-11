@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import { Button, ButtonGroup, Input, Row, Col, Tooltip } from 'element-ui';
+import { Button, ButtonGroup, Input, Row, Col, Tooltip } from 'element-ui'
 
 export default {
   name: 'LoginBar',
@@ -51,25 +51,25 @@ export default {
   },
   computed: {
     userName() {
-      const userData = this.$store.getters['user/data'];
-      return `${userData.first_name} ${userData.last_name}`;
+      const userData = this.$store.getters['user/data']
+      return `${userData.first_name} ${userData.last_name}`
     },
     loggedIn() {
-      return this.$store.getters['user/loggedIn'];
+      return this.$store.getters['user/loggedIn']
     },
   },
   methods: {
     submitForm(formName) {
-      const method = formName === 'form' ? 'register' : 'login';
+      const method = formName === 'form' ? 'register' : 'login'
       this.$refs[formName].validate((valid) => {
         if (!valid) {
-          return false;
+          return false
         }
 
-        this[method]();
+        this[method]()
 
-        return true;
-      });
+        return true
+      })
     },
     logoutConfirm() {
       this.$store.dispatch('modal/open', {
@@ -79,23 +79,23 @@ export default {
         confirm: {
           callback: this.logout,
         },
-      });
+      })
     },
     settings() {
       this.$store.dispatch('modal/open', {
         message: 'Sorry, but we haven\'t implemented Settings yet',
         type: 'info',
-      });
+      })
     },
     history() {
       if (this.$router.currentRoute.name === 'order_history') {
-        this.$router.go(-1);
+        this.$router.go(-1)
       } else {
-        this.$router.push('/order_history');
+        this.$router.push('/order_history')
       }
     },
     logout() {
-      this.$store.dispatch('user/logout');
+      this.$store.dispatch('user/logout')
     },
 
     login() {
@@ -104,42 +104,42 @@ export default {
         spinner: 'el-icon-loading',
         background: 'rgba(0, 0, 0, 0.6)',
         fullscreen: true,
-      });
+      })
       const user = {
         email: this.email,
         password: this.password,
         password_confirmation: this.password,
-      };
+      }
 
       this.$store.dispatch('user/login', user).then((v) => {
-        console.log(v);
-        this.loading.close();
-        this.loading = false;
+        console.log(v)
+        this.loading.close()
+        this.loading = false
       }).catch((e) => {
-        console.log('error');
-        console.log(e);
-        this.loading.close();
-        this.loading = false;
-      });
+        console.log('error')
+        console.log(e)
+        this.loading.close()
+        this.loading = false
+      })
     },
 
     forgot() {
       this.$store.dispatch('modal/open', {
         message: 'Sorry, but we haven\'t implemented Forgot Password yet',
         type: 'info',
-      });
+      })
     },
 
     testEmail() {
-      this.$store.dispatch('user/testMail');
+      this.$store.dispatch('user/testMail')
     },
 
   },
   mounted() {
-    const m = localStorage.getItem('m');
+    const m = localStorage.getItem('m')
     if (m === 'nik') {
-      this.showTest = true;
+      this.showTest = true
     }
   },
-};
+}
 </script>

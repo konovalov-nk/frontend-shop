@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import IndexPage from '@/components/pages/IndexPage.vue';
+import IndexPage from '@/components/pages/IndexPage.vue'
 
 export default {
   name: 'index',
@@ -11,8 +11,8 @@ export default {
     IndexPage,
   },
   mounted() {
-    const jwt = localStorage.getItem('APP_KEY_JWT');
-    this.$store.dispatch('user/setJWTFetch', jwt);
+    const jwt = localStorage.getItem('APP_KEY_JWT')
+    this.$store.dispatch('user/setJWTFetch', jwt)
   },
-};
+}
 </script>

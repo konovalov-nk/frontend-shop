@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import { Steps, Step } from 'element-ui';
+import { Steps, Step } from 'element-ui'
 
 export default {
   name: 'ContentGrid',
@@ -30,5 +30,5 @@ export default {
   components: {
     Steps, Step,
   },
-};
+}
 </script>
